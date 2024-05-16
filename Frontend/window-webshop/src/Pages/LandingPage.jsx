@@ -31,6 +31,12 @@ const LandingPage = () => {
           />
           <Button variant="outline-success">Search</Button>
         </Form>
+        <Nav.Link as={Link} to="/register" className="btn btn-primary m-2">
+            Register
+          </Nav.Link>
+          <Nav.Link as={Link} to="/login" className="btn btn-primary m-2">
+            Login
+          </Nav.Link>
       </Navbar>
       <div className="content-container">
         <Outlet />

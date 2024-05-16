@@ -1,4 +1,4 @@
-// src/main.jsx
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -6,6 +6,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import LandingPage from './Pages/LandingPage';
 import AboutUs from './Pages/AboutUs';
 import BrowseWindows from './Pages/BrowseWindows.jsx';
+import Register from './Pages/Register.jsx';
+import Login from './Pages/Login.jsx';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
       {
         path: 'browse',
         element: <BrowseWindows/>,
+      },
+      {
+        path: 'register',
+        element: <Register/>,
+      },
+      {
+        path: 'login',
+        element: <Login/>,
       },
       
      
