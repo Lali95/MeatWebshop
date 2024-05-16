@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Outlet, Link } from 'react-router-dom';
+import '../Css/LandingPage.css';
 
 const LandingPage = () => {
   const handleGoBack = () => {
