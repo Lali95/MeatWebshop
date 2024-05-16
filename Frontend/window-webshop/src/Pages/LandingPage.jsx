@@ -1,7 +1,10 @@
 import React from 'react';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { Outlet, Link } from 'react-router-dom';
+import { BsSearch } from 'react-icons/bs'; // Import the search icon
 import '../Css/LandingPage.css'; // Ensure this path is correct
+
+
 
 const LandingPage = () => {
   const handleGoBack = () => {
@@ -21,7 +24,7 @@ const LandingPage = () => {
           <Nav.Link as={Link} to="/browse" className="btn btn-primary m-2">
             Browse Windows
           </Nav.Link>
-      
+         
         </Nav>
         <Form className="d-flex search-form">
           <FormControl
@@ -30,7 +33,9 @@ const LandingPage = () => {
             className="mr-2 search-input"
             aria-label="Search"
           />
-          <Button variant="outline-success">Search</Button>
+          <Button variant="outline-success" className="search-button">
+            <BsSearch /> {/* Magnifying glass icon */}
+          </Button>
         </Form>
         <Nav.Link as={Link} to="/register" className="btn btn-primary m-2">
             Register

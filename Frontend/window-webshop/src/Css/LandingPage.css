@@ -40,3 +40,27 @@
     padding: 20px;
   }
   
+  /* Add this CSS to your LandingPage.css file */
+.search-form {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    border: 1px solid #ced4da; /* Match input border */
+    border-radius: 5px; /* Match input border radius */
+    padding: 5px; /* Match input padding */
+  }
+  
+  .search-input {
+    flex-grow: 1; /* Expand input to fill available space */
+    border: none; /* Remove input border */
+    outline: none; /* Remove input focus outline */
+  }
+  
+  .search-input::placeholder {
+    color: #6c757d; /* Match input placeholder color */
+  }
+  
+  .search-button {
+    border: none; /* Remove button border */
+    background-color: transparent; /* Make button background transparent */
+  }
+  
