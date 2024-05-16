@@ -10,17 +10,17 @@ const LandingPage = () => {
   return (
     <div className="nav-container">
       <Navbar bg="light" expand="lg">
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link as={Link} to="/about" className="btn btn-primary m-2">
-              About Us
-            </Nav.Link>
-            <Nav.Link as={Link} to="/browse" className="btn btn-primary m-2">
-              Browse Windows
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
+        <Nav className="mr-auto">
+          <Nav.Link as={Link} to="/" className="btn btn-primary m-2">
+            Home
+          </Nav.Link>
+          <Nav.Link as={Link} to="/about" className="btn btn-primary m-2">
+            About Us
+          </Nav.Link>
+          <Nav.Link as={Link} to="/browse" className="btn btn-primary m-2">
+            Browse Windows
+          </Nav.Link>
+        </Nav>
       </Navbar>
       <div className="content-container">
         <Outlet />
