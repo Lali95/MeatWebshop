@@ -21,6 +21,7 @@ const LandingPage = () => {
           <Nav.Link as={Link} to="/browse" className="btn btn-primary m-2">
             Browse Windows
           </Nav.Link>
+      
         </Nav>
         <Form className="d-flex search-form">
           <FormControl
