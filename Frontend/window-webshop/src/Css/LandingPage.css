@@ -1,3 +1,4 @@
+/* D:\WindowWebshop\Frontend\Css\LandingPage.css */
 .nav-container {
     padding: 20px;
     background-color: #f8f9fa; /* Bootstrap's light background color */
@@ -19,6 +20,14 @@
     background-color: #0056b3; /* Darker shade for hover effect */
   }
   
+  .search-form {
+    flex-grow: 1;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
   .back-button {
     position: fixed;
     bottom: 20px;
@@ -28,3 +37,4 @@
   .content-container {
     padding: 20px;
   }
+  

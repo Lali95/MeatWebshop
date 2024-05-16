@@ -1,7 +1,7 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { Outlet, Link } from 'react-router-dom';
-import '../Css/LandingPage.css';
+import '../Css/LandingPage.css'; // Ensure this path is correct
 
 const LandingPage = () => {
   const handleGoBack = () => {
@@ -22,6 +22,15 @@ const LandingPage = () => {
             Browse Windows
           </Nav.Link>
         </Nav>
+        <Form className="d-flex search-form">
+          <FormControl
+            type="search"
+            placeholder="Search"
+            className="mr-2 search-input"
+            aria-label="Search"
+          />
+          <Button variant="outline-success">Search</Button>
+        </Form>
       </Navbar>
       <div className="content-container">
         <Outlet />
