@@ -43,10 +43,17 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Sausage>> PostSausage(Sausage sausage)
         {
-            _context.Sausages.Add(sausage);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Sausages.Add(sausage);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetSausage), new { id = sausage.Id }, sausage);
+                return CreatedAtAction(nameof(GetSausage), new { id = sausage.Id }, sausage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
         }
 
         // PUT: api/Sausage/5
