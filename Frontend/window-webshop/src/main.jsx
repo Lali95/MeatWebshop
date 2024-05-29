@@ -5,7 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import LandingPage from './Pages/LandingPage';
 import AboutUs from './Pages/AboutUs';
-import BrowseWindows from './Pages/BrowseWindows.jsx';
+import BrowseItems from './Pages/BrowseItems.jsx';
 import Register from './Pages/Register.jsx';
 import Login from './Pages/Login.jsx';
 
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'browse',
-        element: <BrowseWindows/>,
+        element: <BrowseItems/>,
       },
       {
         path: 'register',

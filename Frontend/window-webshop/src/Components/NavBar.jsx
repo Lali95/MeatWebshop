@@ -21,7 +21,7 @@ const NavBar = () => {
           About Us
         </Nav.Link>
         <Nav.Link as={Link} to="/browse" className="btn btn-primary m-2">
-          Browse Windows
+          Browse Meat
         </Nav.Link>
       </Nav>
       <Form className="d-flex search-form">
