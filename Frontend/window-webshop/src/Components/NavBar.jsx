@@ -1,12 +1,18 @@
+// src/components/NavBar.js
 import React from 'react';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
-import '../Css/NavBar.css'; // You might want to create a separate CSS file for NavBar styles
+import '../Css/NavBar.css';
+import logo from '../assets/logo.png';
 
 const NavBar = () => {
   return (
     <Navbar bg="light" expand="lg">
+      <Navbar.Brand className="company-name">
+        <img src={logo} alt="Company Logo" className="logo" />
+        Sülysáp Húsmester
+      </Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link as={Link} to="/" className="btn btn-primary m-2">
           Home
@@ -26,7 +32,7 @@ const NavBar = () => {
           aria-label="Search"
         />
         <Button variant="outline-success" className="search-button">
-          <BsSearch /> {/* Magnifying glass icon */}
+          <BsSearch />
         </Button>
       </Form>
       <Nav.Link as={Link} to="/register" className="btn btn-primary m-2">
