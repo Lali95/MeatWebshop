@@ -1,4 +1,7 @@
+// BrowseItems.jsx
+
 import React, { useState, useEffect } from 'react';
+import SausageCard from '../Components/SausageCard'; // Adjust the import path as needed
 
 function BrowseItems() {
   const [sausages, setSausages] = useState([]);
@@ -7,7 +10,7 @@ function BrowseItems() {
   useEffect(() => {
     async function fetchSausages() {
       try {
-        const response = await fetch('/api/Sausage');
+        const response = await fetch('/api/sausage'); // Replace with your backend API endpoint
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -29,14 +32,12 @@ function BrowseItems() {
 
   return (
     <div>
-      <h1>Browse Sausages</h1>
-      <ul>
+      <h1>Browse Items</h1>
+      <div>
         {sausages.map((sausage) => (
-          <li key={sausage.id}>
-            {sausage.name}   {/* Adjust fields based on your Sausage model */}
-          </li>
+          <SausageCard key={sausage.id} sausage={sausage} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

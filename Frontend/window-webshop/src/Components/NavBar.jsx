@@ -3,7 +3,7 @@ import React from 'react';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
-import '../Css/NavBar.css';
+import '../Css/Navbar.css';
 import logo from '../assets/logo.png';
 
 const NavBar = () => {
