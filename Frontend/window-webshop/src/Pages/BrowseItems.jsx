@@ -33,7 +33,7 @@ function BrowseItems() {
   return (
     <div>
       <h1>Browse Items</h1>
-      <div>
+      <div className="sausage-list">
         {sausages.map((sausage) => (
           <SausageCard key={sausage.id} sausage={sausage} />
         ))}

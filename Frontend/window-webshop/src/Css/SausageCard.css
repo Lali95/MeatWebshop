@@ -1,12 +1,20 @@
 /* SausageCard.css */
 
-.sausage-card {
+.sausage-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .sausage-card {
+    flex: 0 1 calc(20% - 1rem); /* 20% width with margin in between */
     background-color: #f0f0f0;
     padding: 1rem;
     margin-bottom: 1rem;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center align content */
   }
   
   .sausage-card h3 {
@@ -14,7 +22,9 @@
     color: #333;
   }
   
-  .sausage-card p {
-    color: #666;
+  .sausage-image {
+    max-width: 100px;
+    height: auto;
+    margin-top: 1rem; /* Adjust spacing as needed */
   }
   
