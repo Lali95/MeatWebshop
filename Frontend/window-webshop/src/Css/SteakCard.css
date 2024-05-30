@@ -1,0 +1,14 @@
+.steak-card {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 16px;
+    text-align: center;
+    margin: 8px;
+  }
+  
+  .steak-image {
+    width: 100px;
+    height: auto;
+    border-radius: 4px;
+  }
+  

@@ -1,29 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import SausageCard from '../Components/SausageCard'; // Adjust the import path as needed
+import SausageCard from '../Components/SausageCard';
+import SteakCard from '../Components/SteakCard'; // Import the SteakCard component
+import '../Css/BrowseItems.css'; // Make sure to add any necessary styling here
 
 function BrowseItems() {
   const [sausages, setSausages] = useState([]);
+  const [steaks, setSteaks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [meatType, setMeatType] = useState('sausage'); // Default meat type is 'sausage'
+  const [selectedType, setSelectedType] = useState('sausage');
 
   useEffect(() => {
-    async function fetchSausages() {
+    async function fetchItems() {
       try {
-        const response = await fetch(`/api/${meatType}`); // Fetch based on selected meat type
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+        const sausageResponse = await fetch('/api/sausage');
+        const steakResponse = await fetch('/api/steak');
+        
+        if (!sausageResponse.ok) {
+          throw new Error(`HTTP error! Status: ${sausageResponse.status}`);
         }
-        const data = await response.json();
-        setSausages(data);
+        if (!steakResponse.ok) {
+          throw new Error(`HTTP error! Status: ${steakResponse.status}`);
+        }
+
+        const sausageData = await sausageResponse.json();
+        const steakData = await steakResponse.json();
+
+        setSausages(sausageData);
+        setSteaks(steakData);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching sausages:', error);
+        console.error('Error fetching items:', error);
         setLoading(false);
       }
     }
 
-    fetchSausages();
-  }, [meatType]); // Re-fetch when meatType changes
+    fetchItems();
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -31,16 +43,20 @@ function BrowseItems() {
 
   return (
     <div>
-      <h1>Browse Products</h1>
+      <h1>Browse Items</h1>
       <div>
-        <button onClick={() => setMeatType('sausage')}>Sausage</button>
-        <button onClick={() => setMeatType('bacon')}>Bacon</button>
-        <button onClick={() => setMeatType('steak')}>Steak</button>
+        <button onClick={() => setSelectedType('sausage')}>Sausage</button>
+        <button onClick={() => setSelectedType('steak')}>Steak</button>
+        {/* Add more buttons for other meat types if needed */}
       </div>
-      <div className="sausage-list">
-        {sausages.map((sausage) => (
+      <div className="item-list">
+        {selectedType === 'sausage' && sausages.map((sausage) => (
           <SausageCard key={sausage.id} sausage={sausage} />
         ))}
+        {selectedType === 'steak' && steaks.map((steak) => (
+          <SteakCard key={steak.id} steak={steak} />
+        ))}
+        {/* Add more conditions for other meat types if needed */}
       </div>
     </div>
   );

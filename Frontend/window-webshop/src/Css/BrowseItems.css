@@ -1,0 +1,12 @@
+.item-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .sausage-card, .steak-card {
+    flex: 1 0 18%; /* Adjust the width as needed */
+    box-sizing: border-box;
+    margin: 10px;
+  }
+  
