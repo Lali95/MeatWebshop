@@ -32,3 +32,24 @@
     align-items: center;
   }
   
+  .suggestions-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .suggestions-dropdown .list-group-item {
+    cursor: pointer;
+  }
+  
+  .suggestions-dropdown .list-group-item:hover {
+    background-color: #f8f9fa;
+  }
+  
