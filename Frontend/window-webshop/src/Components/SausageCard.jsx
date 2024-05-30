@@ -1,14 +1,21 @@
+// SausageCard.js
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../Css/SausageCard.css'; // Import your CSS for styling
-import sausageImage from '../assets/sausage.png'; // Adjust the path to your sausage image
+import '../Css/SausageCard.css'; // Adjust the path as necessary
+import sausageImage from '../assets/sausage.png'; // Adjust the path as necessary
 
 const SausageCard = ({ sausage }) => {
   return (
     <div className="sausage-card">
-      <h3>{sausage.name}</h3>
       <img src={sausageImage} alt="Sausage" className="sausage-image" />
-      {/* You can add more details here if needed */}
+      <div className="sausage-details">
+        <h3 className="sausage-name">{sausage.name}</h3>
+        <p className="sausage-price">${sausage.price}</p>
+        {/* Additional details can be added here */}
+      </div>
+      <a href={`/sausage/${sausage.id}`} className="sausage-link">
+        View Details
+      </a>
     </div>
   );
 };
@@ -17,6 +24,7 @@ SausageCard.propTypes = {
   sausage: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
     // Add more properties as needed
   }).isRequired,
 };

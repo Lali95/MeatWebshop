@@ -47,13 +47,9 @@ function BrowseItems() {
     return items.map((item) => (
       <div key={item.id} className={`card-wrapper ${selectedType}-card`}>
         {selectedType === 'sausage' ? (
-          <Link to={`/sausage/${item.id}`}>
-            <SausageCard sausage={item} />
-          </Link>
+          <SausageCard sausage={item} />
         ) : (
-          <Link to={`/steak/${item.id}`}>
-            <SteakCard steak={item} />
-          </Link>
+          <SteakCard steak={item} />
         )}
       </div>
     ));
@@ -74,8 +70,7 @@ function BrowseItems() {
         </select>
       </div>
       <div className="item-list">
-        {selectedType === 'sausage' && renderCards(sausages)}
-        {selectedType === 'steak' && renderCards(steaks)}
+        {renderCards(selectedType === 'sausage' ? sausages : steaks)}
       </div>
     </div>
   );

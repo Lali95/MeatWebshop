@@ -1,3 +1,5 @@
+/* SteakCard.css */
+
 .steak-card {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -29,6 +31,10 @@
   margin-bottom: 16px;
 }
 
+.steak-details {
+  margin-bottom: 12px;
+}
+
 .steak-name {
   font-size: 18px;
   font-weight: bold;
@@ -36,29 +42,25 @@
   margin-bottom: 8px;
 }
 
-.steak-description {
-  font-size: 14px;
-  color: #666;
-  line-height: 1.4;
-  margin-bottom: 16px;
-}
-
 .steak-price {
   font-size: 16px;
   color: #00bcd4;
+  margin-bottom: 8px;
 }
 
-.steak-button {
+.steak-link {
   background-color: #00bcd4;
   color: #fff;
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
   font-size: 14px;
-  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: auto; /* Push the link to the bottom */
   transition: background-color 0.3s ease;
 }
 
-.steak-button:hover {
+.steak-link:hover {
   background-color: #0097a7;
 }

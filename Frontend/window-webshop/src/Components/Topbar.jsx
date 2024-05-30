@@ -75,7 +75,7 @@ const Topbar = () => {
           About Us
         </Nav.Link>
         <Nav.Link as={Link} to="/browse" className="btn btn-primary m-2">
-          Browse Meat
+          Browse Products
         </Nav.Link>
       </Nav>
       <Form ref={searchFormRef} className="d-flex search-form">
