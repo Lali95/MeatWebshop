@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import '../Css/LandingPage.css';
-import NavBar from '../Components/Navbar';
+import Topbar from '../Components/Topbar';
 
 const LandingPage = () => {
   const handleGoBack = () => {
@@ -10,7 +10,7 @@ const LandingPage = () => {
 
   return (
     <div className="nav-container">
-      <NavBar />
+      <Topbar />
       <div className="content-container">
         <Outlet />
       </div>

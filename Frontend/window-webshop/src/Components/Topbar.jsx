@@ -3,10 +3,10 @@ import React from 'react';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
-import '../Css/Navbar.css';
+import '../Css/Topbar.css';
 import logo from '../assets/logo.png';
 
-const NavBar = () => {
+const Topbar = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand className="company-name">
@@ -45,4 +45,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default Topbar;

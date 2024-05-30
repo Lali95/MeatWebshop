@@ -45,9 +45,16 @@ function BrowseItems() {
     <div>
       <h1>Browse Items</h1>
       <div>
-        <button onClick={() => setSelectedType('sausage')}>Sausage</button>
-        <button onClick={() => setSelectedType('steak')}>Steak</button>
-        {/* Add more buttons for other meat types if needed */}
+        <label htmlFor="meatType">Select product: </label>
+        <select
+          id="meatType"
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value)}
+        >
+          <option value="sausage">Sausage</option>
+          <option value="steak">Steak</option>
+          {/* Add more options for other meat types if needed */}
+        </select>
       </div>
       <div className="item-list">
         {selectedType === 'sausage' && sausages.map((sausage) => (
