@@ -111,6 +111,9 @@ const Topbar = () => {
       <Nav.Link as={Link} to="/login" className="btn btn-primary m-2">
         Login
       </Nav.Link>
+      <Nav.Link as={Link} to="/cart" className="btn btn-primary m-2">
+          Cart
+        </Nav.Link>
     </Navbar>
   );
 };

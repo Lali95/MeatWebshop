@@ -4,7 +4,7 @@ import steakImage from '../assets/steak.jpg';
 import sausageImage from '../assets/sausage.png';
 import '../Css/ItemDetails.css'; // Adjust the path as necessary
 
-function ItemDetails() {
+function ItemDetails({ addToCart }) {
   const { itemType, itemId } = useParams();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -40,6 +40,18 @@ function ItemDetails() {
     }
   }, [itemType]);
 
+  const handleAddToCart = () => {
+    if (item) {
+      addToCart({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: 1,
+        image: itemImage, // Ensure item includes an 'image' property
+      });
+    }
+  };
+
   if (loading) {
     return <div className="loading">Loading...</div>;
   }
@@ -56,6 +68,9 @@ function ItemDetails() {
         <p className="item-type">Type: {item.type}</p>
         <p className="item-weight">Weight: {item.weight}</p>
         <p className="item-price">Price: ${item.price}</p>
+        <button className="add-to-cart-button" onClick={handleAddToCart}>
+          Add to Cart
+        </button>
         {/* Add more details as needed */}
       </div>
     </div>

@@ -1,14 +1,10 @@
-// Pages/Cart.jsx
-
 import React, { useState } from 'react';
 import CartItem from '../Components/CartItem';
+import ItemDetails from './ItemDetails'; // Adjust the path as necessary
 import '../Css/Cart.css'; // Adjust the path as necessary
 
 function Cart() {
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: 'Sausage', price: 10, quantity: 2 },
-    { id: 2, name: 'Steak', price: 15, quantity: 1 },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
 
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => {
@@ -28,6 +24,17 @@ function Cart() {
     setCartItems(updatedCart);
   };
 
+  const addToCart = (newItem) => {
+    const existingItem = cartItems.find(item => item.id === newItem.id);
+    if (existingItem) {
+      // Item already exists in cart, update quantity
+      updateQuantity(newItem.id, existingItem.quantity + newItem.quantity);
+    } else {
+      // Add new item to cart
+      setCartItems([...cartItems, newItem]);
+    }
+  };
+
   return (
     <div className="cart-page">
       <h1>Shopping Cart</h1>
@@ -45,6 +52,15 @@ function Cart() {
         <h3>Total Price: ${getTotalPrice()}</h3>
         <button className="checkout-button">Checkout</button>
       </div>
+      {/* Pass addToCart function to ItemDetails */}
+      {cartItems.map(item => (
+        <ItemDetails
+          key={item.id}
+          itemType={item.type}  // Assuming your item has a 'type' property
+          itemId={item.id}
+          addToCart={addToCart} // Pass addToCart function here
+        />
+      ))}
     </div>
   );
 }
