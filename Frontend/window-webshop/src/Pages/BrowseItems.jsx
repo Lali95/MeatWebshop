@@ -15,7 +15,7 @@ function BrowseItems() {
       try {
         const sausageResponse = await fetch('/api/sausage');
         const steakResponse = await fetch('/api/steak');
-        
+
         if (!sausageResponse.ok) {
           throw new Error(`HTTP error! Status: ${sausageResponse.status}`);
         }
@@ -42,8 +42,25 @@ function BrowseItems() {
     return <div>Loading...</div>;
   }
 
+  // Render cards based on selectedType
+  const renderCards = (items) => {
+    return items.map((item) => (
+      <div key={item.id} className={`card-wrapper ${selectedType}-card`}>
+        {selectedType === 'sausage' ? (
+          <Link to={`/sausage/${item.id}`}>
+            <SausageCard sausage={item} />
+          </Link>
+        ) : (
+          <Link to={`/steak/${item.id}`}>
+            <SteakCard steak={item} />
+          </Link>
+        )}
+      </div>
+    ));
+  };
+
   return (
-    <div>
+    <div className="browse-items">
       <h1>Browse Items</h1>
       <div>
         <label htmlFor="meatType">Select product: </label>
@@ -57,16 +74,8 @@ function BrowseItems() {
         </select>
       </div>
       <div className="item-list">
-        {selectedType === 'sausage' && sausages.map((sausage) => (
-          <Link key={sausage.id} to={`/sausage/${sausage.id}`}>
-            <SausageCard sausage={sausage} />
-          </Link>
-        ))}
-        {selectedType === 'steak' && steaks.map((steak) => (
-          <Link key={steak.id} to={`/steak/${steak.id}`}>
-            <SteakCard steak={steak} />
-          </Link>
-        ))}
+        {selectedType === 'sausage' && renderCards(sausages)}
+        {selectedType === 'steak' && renderCards(steaks)}
       </div>
     </div>
   );

@@ -1,18 +1,46 @@
-.item-list {
+.browse-items {
+    padding: 20px;
+  }
+  
+  .item-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
   }
   
-  .sausage-card, .steak-card {
-    flex: 1 0 18%; /* Adjust the width as needed */
+  .card-wrapper {
+    flex: 1 0 calc(20% - 20px); /* Adjust the width as needed */
     box-sizing: border-box;
     margin: 10px;
   }
   
-  select {
+  .select {
     margin: 10px;
     padding: 5px;
     font-size: 16px;
+  }
+  
+  @media (max-width: 1200px) {
+    .card-wrapper {
+      flex: 1 0 calc(25% - 20px);
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .card-wrapper {
+      flex: 1 0 calc(33.33% - 20px);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .card-wrapper {
+      flex: 1 0 calc(50% - 20px);
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .card-wrapper {
+      flex: 1 0 calc(100% - 20px);
+    }
   }
   
