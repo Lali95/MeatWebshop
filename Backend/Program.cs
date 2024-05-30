@@ -1,9 +1,9 @@
 using Backend.Data;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Backend.Model;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using System;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 AddServices();
 ConfigureSwagger();
 AddDbContext();
+InitializeDb();
 
 var app = builder.Build();
 
@@ -87,4 +88,57 @@ void AddDbContext()
     builder.Services.AddDbContext<SteakContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped
     );
+}
+
+void InitializeDb()
+{
+    using var serviceScope = builder.Services.BuildServiceProvider().CreateScope();
+    var sausageContext = serviceScope.ServiceProvider.GetRequiredService<SausageContext>();
+    var steakContext = serviceScope.ServiceProvider.GetRequiredService<SteakContext>();
+
+    if (!sausageContext.Sausages.Any())
+    {
+        for (int i = 1; i <= 20; i++)
+        {
+            var sausage = new Sausage
+            {
+                Name = $"Sausage {i}",
+                Type = "sausage",
+                Weight = GenerateRandomWeight(),
+                Price = GenerateRandomPrice(),
+                // Add other properties as needed
+            };
+            sausageContext.Sausages.Add(sausage);
+        }
+        sausageContext.SaveChanges();
+    }
+
+    if (!steakContext.Steaks.Any())
+    {
+        for (int i = 1; i <= 20; i++)
+        {
+            var steak = new Steak
+            {
+                Name = $"Steak {i}",
+                Type = "steak",
+                Weight = GenerateRandomWeight(),
+                Price = GenerateRandomPrice(),
+                // Add other properties as needed
+            };
+            steakContext.Steaks.Add(steak);
+        }
+        steakContext.SaveChanges();
+    }
+}
+
+float GenerateRandomWeight()
+{
+    Random rand = new Random();
+    return (float)(rand.NextDouble() * (1.0 - 0.1) + 0.1); // Random weight between 0.1 and 1.0
+}
+
+decimal GenerateRandomPrice()
+{
+    Random rand = new Random();
+    return Math.Round((decimal)(rand.Next(10, 100)), 2); // Random price between 10 and 100
 }
