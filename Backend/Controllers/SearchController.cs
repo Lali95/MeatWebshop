@@ -12,19 +12,17 @@ namespace Backend.Controllers
     [ApiController]
     public class SearchController : ControllerBase
     {
-        private readonly SausageContext _sausageContext;
-        private readonly SteakContext _steakContext;
+        private readonly AppDbContext _context;
 
-        public SearchController(SausageContext sausageContext, SteakContext steakContext)
+        public SearchController(AppDbContext context)
         {
-            _sausageContext = sausageContext;
-            _steakContext = steakContext;
+            _context = context;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> Search(string query)
         {
-            var sausageResults = await _sausageContext.Sausages
+            var sausageResults = await _context.Sausages
                 .Where(s => s.Name.Contains(query) || s.Type.Contains(query))
                 .Select(s => new
                 {
@@ -37,7 +35,7 @@ namespace Backend.Controllers
                 })
                 .ToListAsync();
 
-            var steakResults = await _steakContext.Steaks
+            var steakResults = await _context.Steaks
                 .Where(s => s.Name.Contains(query) || s.Type.Contains(query))
                 .Select(s => new
                 {

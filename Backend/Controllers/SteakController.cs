@@ -1,9 +1,11 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Backend.Controllers
 {
@@ -11,9 +13,9 @@ namespace Backend.Controllers
     [ApiController]
     public class SteakController : ControllerBase
     {
-        private readonly SteakContext _context;
+        private readonly AppDbContext _context;
 
-        public SteakController(SteakContext context)
+        public SteakController(AppDbContext context)
         {
             _context = context;
         }

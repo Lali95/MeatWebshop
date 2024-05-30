@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,9 +12,9 @@ namespace Backend.Controllers
     [ApiController]
     public class SausageController : ControllerBase
     {
-        private readonly SausageContext _context;
+        private readonly AppDbContext _context;
 
-        public SausageController(SausageContext context)
+        public SausageController(AppDbContext context)
         {
             _context = context;
         }

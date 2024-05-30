@@ -1,24 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import steakImage from '../assets/steak.jpg';
-import sausageImage from '../assets/sausage.png';
 import '../Css/ItemDetails.css'; // Adjust the path as necessary
 
-function ItemDetails({ addToCart }) {
-  const { itemType, itemId } = useParams();
+function ItemDetails() {
+  const { itemId } = useParams();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [itemImage, setItemImage] = useState(null);
 
   useEffect(() => {
     async function fetchItemDetails() {
       try {
-        const response = await fetch(`/api/${itemType}/${itemId}`);
-        
+        const response = await fetch(`/api/items/${itemId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
         const itemData = await response.json();
         setItem(itemData);
         setLoading(false);
@@ -27,28 +22,29 @@ function ItemDetails({ addToCart }) {
         setLoading(false);
       }
     }
-
     fetchItemDetails();
-  }, [itemType, itemId]);
+  }, [itemId]);
 
-  useEffect(() => {
-    // Determine which image to use based on itemType
-    if (itemType === 'sausage') {
-      setItemImage(sausageImage);
-    } else if (itemType === 'steak') {
-      setItemImage(steakImage);
-    }
-  }, [itemType]);
-
-  const handleAddToCart = () => {
-    if (item) {
-      addToCart({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: 1,
-        image: itemImage, // Ensure item includes an 'image' property
+  const handleAddToCart = async () => {
+    try {
+      const response = await fetch(`/api/orders/1/items`, { // Replace '1' with your actual order ID
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: 1,
+        }),
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      alert(`${item.name} added to cart!`);
+    } catch (error) {
+      console.error('Error adding item to cart:', error);
     }
   };
 
@@ -63,7 +59,6 @@ function ItemDetails({ addToCart }) {
   return (
     <div className="item-details">
       <h1 className="item-name">{item.name}</h1>
-      <img src={itemImage} alt={item.name} className="item-image" />
       <div className="item-info">
         <p className="item-type">Type: {item.type}</p>
         <p className="item-weight">Weight: {item.weight}</p>
@@ -71,7 +66,6 @@ function ItemDetails({ addToCart }) {
         <button className="add-to-cart-button" onClick={handleAddToCart}>
           Add to Cart
         </button>
-        {/* Add more details as needed */}
       </div>
     </div>
   );
