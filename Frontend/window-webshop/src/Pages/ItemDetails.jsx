@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import steakImage from '../assets/steak.jpg';
 import sausageImage from '../assets/sausage.png';
+import '../Css/ItemDetails.css'; // Adjust the path as necessary
 
 function ItemDetails() {
   const { itemType, itemId } = useParams();
@@ -40,21 +41,23 @@ function ItemDetails() {
   }, [itemType]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
 
   if (!item) {
-    return <div>Item not found</div>;
+    return <div className="not-found">Item not found</div>;
   }
 
   return (
-    <div>
-      <h1>{item.name}</h1>
-      <img src={itemImage} alt={item.name} style={{ maxWidth: '300px' }} />
-      <p>Type: {item.type}</p>
-      <p>Weight: {item.weight}</p>
-      <p>Price: {item.price}</p>
-      {/* Add more details as needed */}
+    <div className="item-details">
+      <h1 className="item-name">{item.name}</h1>
+      <img src={itemImage} alt={item.name} className="item-image" />
+      <div className="item-info">
+        <p className="item-type">Type: {item.type}</p>
+        <p className="item-weight">Weight: {item.weight}</p>
+        <p className="item-price">Price: ${item.price}</p>
+        {/* Add more details as needed */}
+      </div>
     </div>
   );
 }
