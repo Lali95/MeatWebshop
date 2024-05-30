@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Navbar, Nav, Form, FormControl, Button, ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
@@ -9,6 +9,9 @@ const Topbar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const searchFormRef = useRef(null);
+  const suggestionsDropdownRef = useRef(null);
 
   useEffect(() => {
     if (searchTerm.length > 2) {
@@ -34,16 +37,35 @@ const Topbar = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleSuggestionClick = (suggestion) => {
-    setSearchTerm(suggestion.name); // Assuming the suggestion object has a `name` property
+  const handleSuggestionClick = () => {
     setShowSuggestions(false);
+    setSuggestions([]);
   };
+
+  const handleClickOutside = (event) => {
+    if (
+      searchFormRef.current &&
+      !searchFormRef.current.contains(event.target) &&
+      suggestionsDropdownRef.current &&
+      !suggestionsDropdownRef.current.contains(event.target)
+    ) {
+      setShowSuggestions(false);
+      setSuggestions([]);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
+  }, []);
 
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand className="company-name">
         <img src={logo} alt="Company Logo" className="logo" />
-        Sülysáp Húsmester
+        Sülysápi Húsmester
       </Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link as={Link} to="/" className="btn btn-primary m-2">
@@ -56,7 +78,7 @@ const Topbar = () => {
           Browse Meat
         </Nav.Link>
       </Nav>
-      <Form className="d-flex search-form">
+      <Form ref={searchFormRef} className="d-flex search-form">
         <FormControl
           type="search"
           placeholder="Search"
@@ -69,11 +91,13 @@ const Topbar = () => {
           <BsSearch />
         </Button>
         {showSuggestions && (
-          <ListGroup className="suggestions-dropdown">
+          <ListGroup ref={suggestionsDropdownRef} className="suggestions-dropdown">
             {suggestions.map((suggestion) => (
               <ListGroup.Item
                 key={suggestion.id}
-                onClick={() => handleSuggestionClick(suggestion)}
+                as={Link}
+                to={`/${suggestion.type}/${suggestion.id}`}
+                onClick={handleSuggestionClick} // Close suggestions on click
               >
                 {suggestion.name}
               </ListGroup.Item>
