@@ -9,6 +9,7 @@ import BrowseItems from './Pages/BrowseItems.jsx';
 import Register from './Pages/Register.jsx';
 import Login from './Pages/Login.jsx';
 import ItemDetails from './Pages/ItemDetails.jsx';
+import Cart from './Pages/Cart.jsx';
 
 
 const router = createBrowserRouter([
@@ -40,7 +41,10 @@ const router = createBrowserRouter([
         path: ':itemType/:itemId',
         element: <ItemDetails/>,
       },
-      
+      {
+        path: 'cart',
+        element: <Cart/>,
+      },
      
     ],
   },
