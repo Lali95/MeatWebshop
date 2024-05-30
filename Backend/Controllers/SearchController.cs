@@ -26,10 +26,28 @@ namespace Backend.Controllers
         {
             var sausageResults = await _sausageContext.Sausages
                 .Where(s => s.Name.Contains(query) || s.Type.Contains(query))
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Type = "sausage", // Ensure this matches the frontend logic
+                    Weight = s.Weight,
+                    Price = s.Price,
+                    // Add more properties as needed
+                })
                 .ToListAsync();
 
             var steakResults = await _steakContext.Steaks
                 .Where(s => s.Name.Contains(query) || s.Type.Contains(query))
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Type = "steak", // Ensure this matches the frontend logic
+                    Weight = s.Weight,
+                    Price = s.Price,
+                    // Add more properties as needed
+                })
                 .ToListAsync();
 
             var results = new List<object>();
