@@ -1,5 +1,3 @@
-// SausageCard.jsx
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../Css/SausageCard.css'; // Import your CSS for styling
