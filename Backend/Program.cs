@@ -84,4 +84,7 @@ void AddDbContext()
     builder.Services.AddDbContext<SausageContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped
     );
+    builder.Services.AddDbContext<SteakContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped
+    );
 }
