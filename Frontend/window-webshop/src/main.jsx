@@ -8,6 +8,8 @@ import AboutUs from './Pages/AboutUs';
 import BrowseItems from './Pages/BrowseItems.jsx';
 import Register from './Pages/Register.jsx';
 import Login from './Pages/Login.jsx';
+import ItemDetails from './Pages/ItemDetails.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login/>,
+      },
+      {
+        path: ':itemType/:itemId',
+        element: <ItemDetails/>,
       },
       
      

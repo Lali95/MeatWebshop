@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import SausageCard from '../Components/SausageCard';
-import SteakCard from '../Components/SteakCard'; // Import the SteakCard component
+import SteakCard from '../Components/SteakCard';
 import '../Css/BrowseItems.css'; // Make sure to add any necessary styling here
 
 function BrowseItems() {
@@ -53,17 +54,19 @@ function BrowseItems() {
         >
           <option value="sausage">Sausage</option>
           <option value="steak">Steak</option>
-          {/* Add more options for other meat types if needed */}
         </select>
       </div>
       <div className="item-list">
         {selectedType === 'sausage' && sausages.map((sausage) => (
-          <SausageCard key={sausage.id} sausage={sausage} />
+          <Link key={sausage.id} to={`/sausage/${sausage.id}`}>
+            <SausageCard sausage={sausage} />
+          </Link>
         ))}
         {selectedType === 'steak' && steaks.map((steak) => (
-          <SteakCard key={steak.id} steak={steak} />
+          <Link key={steak.id} to={`/steak/${steak.id}`}>
+            <SteakCard steak={steak} />
+          </Link>
         ))}
-        {/* Add more conditions for other meat types if needed */}
       </div>
     </div>
   );
