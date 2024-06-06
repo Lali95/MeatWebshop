@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -27,7 +28,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/Sausage/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public async Task<ActionResult<Sausage>> GetSausage(int id)
         {
             var sausage = await _context.Sausages.FindAsync(id);
