@@ -30,8 +30,8 @@ function BrowseItems() {
         console.log('Sausage Data:', sausageData);
         console.log('Steak Data:', steakData);
 
-        setSausages(sausageData);
-        setSteaks(steakData);
+        setSausages(sausageData.$values); // Extracting $values array
+        setSteaks(steakData.$values); // Extracting $values array
         setLoading(false);
       } catch (error) {
         console.error('Error fetching items:', error.message);
