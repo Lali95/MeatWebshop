@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace Backend.Controllers
 {
@@ -27,10 +28,20 @@ namespace Backend.Controllers
             return await _context.Sausages.ToListAsync();
         }
 
-        // GET: api/Sausage/5
-        [HttpGet("{id}"), Authorize]
+         [Authorize(Roles="User")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Sausage>> GetSausage(int id)
         {
+            Console.WriteLine(" SENDING THE REQUESTSENDING THE REQUESTSENDING THE REQUESTSENDING THE REQUESTSENDING THE REQUESTSENDING THE REQUESTSENDING THE REQUESTSENDING THE REQUESTSENDING THE REQUESTSENDING THE REQUESTSENDING THE REQUESTSENDING THE REQUESTSENDING THE REQUEST");
+            var user = HttpContext.User;
+            // if (!user.Identity.IsAuthenticated)
+            // {
+            //     return Unauthorized("User is not authenticated");
+            // }
+
+            var accessToken = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            Console.WriteLine($"Access Token: {accessToken}");
+
             var sausage = await _context.Sausages.FindAsync(id);
 
             if (sausage == null)
@@ -40,6 +51,7 @@ namespace Backend.Controllers
 
             return sausage;
         }
+
 
         // POST: api/Sausage
         [HttpPost]

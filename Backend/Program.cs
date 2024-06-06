@@ -1,15 +1,16 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using Backend.Data;
+using Backend.Model;
+using Backend.Repository;
+using Backend.Services.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Backend.Data;
-using Backend.Model;
-using Backend.Service.Authentication;
-using Backend.Repository;
-using Backend.Services.Authentication;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +44,7 @@ app.UseCors(options =>
 
 AddRoles();
 AddAdmin();
-
+//CreateMerchandise();
 
 app.MapControllers();
 
@@ -57,9 +58,11 @@ void AddServices()
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
     builder.Services.AddControllers().AddJsonOptions(options =>
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-    
+
+
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
+
     builder.Services.AddScoped<IUserRepository, UserRepository>();
 }
 
@@ -119,10 +122,10 @@ void AddAuthentication()
             options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ClockSkew = TimeSpan.Zero,
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = false,
+                ValidateIssuerSigningKey = false,
                 ValidIssuer = builder.Configuration["JwtSettings:ValidIssuer"],
                 ValidAudience = builder.Configuration["JwtSettings:ValidAudience"],
                  IssuerSigningKey = new SymmetricSecurityKey(
@@ -197,7 +200,9 @@ async Task CreateAdminIfNotExists()
     }
 }
 
+
+
+
 public partial class Program
 {
 }
-

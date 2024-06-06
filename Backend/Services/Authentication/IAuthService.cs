@@ -1,5 +1,7 @@
 namespace Backend.Services.Authentication;
 
+
+
 public interface IAuthService
 {
     Task<AuthResult> RegisterAsync(string email, string userName, string password, DateTime birthDate, string address, string role);

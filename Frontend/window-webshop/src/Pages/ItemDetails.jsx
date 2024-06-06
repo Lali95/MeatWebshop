@@ -13,7 +13,17 @@ function ItemDetails() {
   useEffect(() => {
     async function fetchItemDetails() {
       try {
-        const response = await fetch(`/api/${itemType}/${itemId}`);
+        const token = localStorage.getItem('accessToken'); 
+        console.log(token)
+        const response = await fetch(`/api/${itemType}/${itemId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`, 
+            'Content-Type': 'application/json'
+          },
+        });
+
+      
+       
         
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -79,7 +89,7 @@ function ItemDetails() {
       <div className="item-info">
         <p className="item-type">Type: {item.type}</p>
         <p className="item-weight">Weight: {item.weight}</p>
-        <p className="item-price">Price: ${item.price}</p>
+        <p className="item-price">Price: ${item.price.toFixed(2)}</p>
         <button className="add-to-cart-button" onClick={handleAddToCart}>
           Add to Cart
         </button>

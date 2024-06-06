@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Backend.Controllers;
 
 [ApiController]
-[Route("/api/[controller]")]
+[Route("[controller]")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -64,7 +64,7 @@ public class AuthController : ControllerBase
         return Ok(new AuthResponse(result.Email, result.UserName, result.Token));
     }
 
- 
+    [Authorize]
     [HttpGet("GetUserByEmail/{userEmail}")]
     public async Task<ActionResult<ApplicationUser>> GetUserByEmail(string userEmail)
     {

@@ -26,11 +26,10 @@ function BrowseItems() {
         const sausageData = await sausageResponse.json();
         const steakData = await steakResponse.json();
 
-        console.log('Sausage Data:', sausageData);
-        console.log('Steak Data:', steakData);
+     
 
-        setSausages(sausageData.$values); // Extracting $values array
-        setSteaks(steakData.$values); // Extracting $values array
+        setSausages(sausageData.$values); 
+        setSteaks(steakData.$values); 
         setLoading(false);
       } catch (error) {
         console.error('Error fetching items:', error.message);
