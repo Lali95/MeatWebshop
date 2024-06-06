@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Vetproject.Service.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +51,7 @@ void AddServices()
     builder.Services.AddControllers();
     builder.Services.AddDbContext<UsersContext>();
     builder.Services.AddScoped<IAuthService, AuthService>();
+    builder.Services.AddScoped<ITokenService, TokenService>();
     
     builder.Services
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
