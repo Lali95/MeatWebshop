@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Profile from "./Profile";
 
 const Login = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // New state for tracking login status
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!accessToken);
+  }, [])
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -15,68 +23,65 @@ const Login = () => {
     };
 
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch("/api/Auth/Login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(loginData),
       });
+      console.log(loginData);
 
       if (!response.ok) {
-        const errorData = await response.json();
-        setErrorMessage(errorData.message);
+        console.error("Login failed:", response.statusText);
         return;
       }
 
-      // Login successful
-      setIsLoggedIn(true);
+      const data = await response.json();
+      console.log("Login successful");
+      console.log("User Email:", data.email);
+      console.log("User Token:", data.token);
 
+      localStorage.setItem("accessToken", data.token);
+      localStorage.setItem("userEmail", data.email)
+      navigate(`/profile`);
     } catch (error) {
       console.error("Error during login:", error);
-      setErrorMessage("An error occurred during login. Please try again later.");
     }
   };
 
   return (
     <div className="login-container">
-      {isLoggedIn ? ( // If logged in, display welcome message
+      {isLoggedIn ? (
         <div>
-          <h4>Welcome, {email}!</h4>
-          {/* You can customize the welcome message as needed */}
+          <h3>You are already logged in.</h3>
+          <Profile />
         </div>
-      ) : ( // If not logged in, display login form
+      ) : (
         <div>
-          <h4>Please log in</h4>
-          <form onSubmit={handleLogin}>
-            <div>
-              <label>
-                Email:
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Password:
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </label>
-            </div>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-            <div>
-              <button type="submit">Login</button>
-            </div>
-          </form>
-        </div>
+      <h3>Please, log in!</h3>
+      <form onSubmit={handleLogin}>
+        <label>
+          Email:
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Password:
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </label>
+        <button type="submit">Login</button>
+      </form>
+      </div>
       )}
     </div>
   );

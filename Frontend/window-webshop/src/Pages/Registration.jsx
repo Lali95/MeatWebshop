@@ -1,28 +1,31 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [birthDate, setBirthDate] = useState(""); // Initialize with empty string
-  const [address, setAddress] = useState(""); // Initialize with empty string
-  const [balance, setBalance] = useState(0); // Initialize with zero
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordMatch, setPasswordMatch] = useState(true);
+  const [birthdate, setBirthdate] = useState("");
+  const [address, setAddress] = useState("");
+  const navigate = useNavigate();
 
   const handleRegistration = async (e) => {
     e.preventDefault();
+
+ 
 
     const registrationData = {
       UserName: username,
       Email: email,
       Password: password,
-      BirthDate: birthDate,
+      BirthDate: birthdate,
       Address: address,
     };
 
     try {
-      const response = await fetch('/api/Auth/Register', {
+      const response = await fetch("/api/Auth/Register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,99 +34,75 @@ const Registration = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        setErrorMessage(errorData.title); // Assuming the error title is meaningful
-        setSuccessMessage(""); // Clear success message on error
+        console.error("Registration failed:", response.statusText);
         return;
       }
 
       const data = await response.json();
-      setSuccessMessage(`Successful registration: ${data.userName}`);
-      setErrorMessage(""); // Clear error message on success
-      setBirthDate(data.birthDate || ""); // Ensure birthDate is defined or set to empty string
-      setAddress(data.address || ""); // Ensure address is defined or set to empty string
-      setBalance(data.balance || 0); // Ensure balance is defined or set to 0
+      console.log("Registration successful");
+      console.log("User Email:", data.email);
+      console.log("User Token:", data.token);
 
+      navigate(`/login`);
+  
     } catch (error) {
       console.error("Error during registration:", error);
-      setErrorMessage("An error occurred during registration. Please try again later.");
-      setSuccessMessage(""); // Clear success message on error
     }
   };
 
+  console.log("password match", passwordMatch);
   return (
     <div className="registration-container">
-      <h4>Please enter your details to register</h4>
+      <h4>Please, enter your data for registering to MovieMerchShop</h4>
       <form onSubmit={handleRegistration}>
-        <div>
-          <label>
-            Username:
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Email:
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Password:
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Birth Date:
-            <input
-              type="date"
-              value={birthDate}
-              onChange={(e) => setBirthDate(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Address:
-            <input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        {successMessage && <p className="success-message">{successMessage}</p>}
-        <div>
-          <button type="submit">Register</button>
-        </div>
+        <label>
+          Select a username:
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Your email address:
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Your password:
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </label>
+      
+        <label>
+          Date of birth:
+          <input
+            type="date"
+            value={birthdate}
+            onChange={(e) => setBirthdate(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Address:
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+          />
+        </label>
+        <button type="submit">Register</button>
       </form>
-      {balance !== 0 && (
-        <div className="registration-details">
-          <h4>Registration Details:</h4>
-          <p><strong>Birth Date:</strong> {birthDate}</p>
-          <p><strong>Address:</strong> {address}</p>
-          <p><strong>Balance:</strong> ${balance.toFixed(2)}</p>
-        </div>
-      )}
     </div>
   );
 };

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import Balance from "../Components/Balance"
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState(null);
+  const [upToBalance, setUpToBalance] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,13 +35,15 @@ const Profile = () => {
     };
 
     fetchUserInfo();
-  }, []);
+  }, [setUpToBalance]);
 
   if (!userInfo) {
     return <p>Loading...</p>;
   };
 
-  
+  const handleBalanceClick = () => {
+    setUpToBalance(!upToBalance)
+  };
 
   const handleLogOut = () => {
     localStorage.clear();
@@ -50,7 +53,13 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <p>Welcome, {userInfo.userName}</p>
-   
+      <p>Balance: {userInfo.balance}</p>
+      <button onClick={handleBalanceClick}>Top up balance!</button>
+      {upToBalance && (
+        <div>
+          <Balance email={userInfo.email} />
+        </div>
+      )}
       <p></p>
       <button onClick={handleLogOut}>Log out</button>
     </div>
