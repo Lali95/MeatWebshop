@@ -2,10 +2,12 @@ using Backend.Contracts;
 using Backend.Services.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Controllers;
+
+
+namespace Vetproject.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authenticationService;
@@ -33,6 +35,14 @@ public class AuthController : ControllerBase
 
         return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName));
     }
+
+    private void AddErrors(AuthResult result)
+    {
+        foreach (var error in result.ErrorMessages)
+        {
+            ModelState.AddModelError(error.Key, error.Value);
+        }
+    }
     
     [HttpPost("Login")]
     public async Task<ActionResult<AuthResponse>> Authenticate([FromBody] AuthRequest request)
@@ -53,12 +63,4 @@ public class AuthController : ControllerBase
         return Ok(new AuthResponse(result.Email, result.UserName, result.Token));
     }
 
-
-    private void AddErrors(AuthResult result)
-    {
-        foreach (var error in result.ErrorMessages)
-        {
-            ModelState.AddModelError(error.Key, error.Value);
-        }
-    }
 }

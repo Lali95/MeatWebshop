@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import LandingPage from './Pages/LandingPage';
 import AboutUs from './Pages/AboutUs';
 import BrowseItems from './Pages/BrowseItems.jsx';
-import Register from './Pages/Register.jsx';
+import Registration from './Pages/Registration.jsx';
 import Login from './Pages/Login.jsx';
 import ItemDetails from './Pages/ItemDetails.jsx';
 import Cart from './Pages/Cart.jsx';
@@ -30,8 +30,8 @@ const router = createBrowserRouter([
         element: <BrowseItems/>,
       },
       {
-        path: 'register',
-        element: <Register/>,
+        path: 'registration',
+        element: <Registration/>,
       },
       {
         path: 'login',
