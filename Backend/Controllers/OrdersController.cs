@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,34 +23,94 @@ namespace Backend.Controllers
         [HttpGet("{orderId}/items")]
         public async Task<ActionResult<List<OrderItem>>> GetOrderItems(int orderId)
         {
-            var order = await _context.Orders
-                .Include(o => o.OrderItems)
-                .FirstOrDefaultAsync(o => o.Id == orderId);
+            var orderItems = await _context.OrderItems
+                .Where(oi => oi.OrderId == orderId)
+                .ToListAsync();
 
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return order.OrderItems;
+            return orderItems;
         }
 
         // POST: api/orders/{orderId}/items
         [HttpPost("{orderId}/items")]
         public async Task<ActionResult<OrderItem>> AddItemToOrder(int orderId, OrderItem orderItem)
         {
-            var order = await _context.Orders.FindAsync(orderId);
+            try
+            {
+                var order = await _context.Orders.FindAsync(orderId);
 
-            if (order == null)
+                if (order == null)
+                {
+                    return NotFound();
+                }
+
+                // Associate the order item with the order
+                orderItem.OrderId = orderId;
+
+                // Add the order item to the context
+                _context.OrderItems.Add(orderItem);
+
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+
+                // Return the newly created order item
+                return CreatedAtAction(nameof(GetOrderItems), new { orderId = orderId }, orderItem);
+            }
+            catch (DbUpdateException ex)
+            {
+                // Log the exception
+                return StatusCode(500, $"Error adding item to order: {ex.Message}");
+            }
+        }
+
+        // PUT: api/orders/{orderId}/items/{itemId}
+        [HttpPut("{orderId}/items/{itemId}")]
+        public async Task<IActionResult> UpdateOrderItem(int orderId, int itemId, OrderItem orderItem)
+        {
+            if (itemId != orderItem.Id || orderId != orderItem.OrderId)
+            {
+                return BadRequest("Item ID or Order ID mismatch");
+            }
+
+            _context.Entry(orderItem).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrderItemExists(itemId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/orders/{orderId}/items/{itemId}
+        [HttpDelete("{orderId}/items/{itemId}")]
+        public async Task<IActionResult> DeleteOrderItem(int orderId, int itemId)
+        {
+            var orderItem = await _context.OrderItems.FindAsync(itemId);
+            if (orderItem == null || orderItem.OrderId != orderId)
             {
                 return NotFound();
             }
 
-            orderItem.OrderId = orderId;
-            _context.OrderItems.Add(orderItem);
+            _context.OrderItems.Remove(orderItem);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetOrderItems), new { orderId = orderId }, orderItem);
+            return NoContent();
+        }
+
+        private bool OrderItemExists(int itemId)
+        {
+            return _context.OrderItems.Any(oi => oi.Id == itemId);
         }
     }
 }
