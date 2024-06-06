@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import '../Css/ItemDetails.css'; // Adjust the path as necessary
+import steakImage from '../assets/steak.jpg';
+import sausageImage from '../assets/sausage.png';
+import '../Css/ItemDetails.css';
 
 function ItemDetails() {
-  const { itemId } = useParams();
+  const { itemType, itemId } = useParams();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [itemImage, setItemImage] = useState(null);
 
   useEffect(() => {
     async function fetchItemDetails() {
       try {
-        const response = await fetch(`/api/items/${itemId}`);
+        const response = await fetch(`/api/${itemType}/${itemId}`);
+        
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
         const itemData = await response.json();
         setItem(itemData);
         setLoading(false);
@@ -22,30 +27,41 @@ function ItemDetails() {
         setLoading(false);
       }
     }
-    fetchItemDetails();
-  }, [itemId]);
 
-  const handleAddToCart = async () => {
-    try {
-      const response = await fetch(`/api/orders/1/items`, { // Replace '1' with your actual order ID
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: 1,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      alert(`${item.name} added to cart!`);
-    } catch (error) {
-      console.error('Error adding item to cart:', error);
+    fetchItemDetails();
+  }, [itemType, itemId]);
+
+  useEffect(() => {
+    // Determine which image to use based on itemType
+    if (itemType === 'sausage') {
+      setItemImage(sausageImage);
+    } else if (itemType === 'steak') {
+      setItemImage(steakImage);
     }
+  }, [itemType]);
+
+  const addToCart = (item) => {
+    const storedCart = localStorage.getItem('cart');
+    const cart = storedCart ? JSON.parse(storedCart) : [];
+    
+    const updatedCart = [...cart, item];
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    alert(`${item.name} has been added to the cart!`);
+  };
+
+  const handleAddToCart = () => {
+    if (!item) return;
+
+    const cartItem = {
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      quantity: 1,
+      type: itemType,
+      image: itemImage,
+    };
+
+    addToCart(cartItem);
   };
 
   if (loading) {
@@ -59,6 +75,7 @@ function ItemDetails() {
   return (
     <div className="item-details">
       <h1 className="item-name">{item.name}</h1>
+      <img src={itemImage} alt={item.name} className="item-image" />
       <div className="item-info">
         <p className="item-type">Type: {item.type}</p>
         <p className="item-weight">Weight: {item.weight}</p>
