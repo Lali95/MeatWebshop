@@ -46,6 +46,7 @@ app.Run();
 void AddServices()
 {
     builder.Services.AddControllers();
+    builder.Services.AddDbContext<UsersContext>();
 
     builder.Services
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
