@@ -64,7 +64,7 @@ public class AuthController : ControllerBase
         return Ok(new AuthResponse(result.Email, result.UserName, result.Token));
     }
 
-    [Authorize]
+ 
     [HttpGet("GetUserByEmail/{userEmail}")]
     public async Task<ActionResult<ApplicationUser>> GetUserByEmail(string userEmail)
     {
