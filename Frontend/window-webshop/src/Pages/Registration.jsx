@@ -6,14 +6,19 @@ const Registration = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [birthDate, setBirthDate] = useState(""); // Initialize with empty string
+  const [address, setAddress] = useState(""); // Initialize with empty string
+  const [balance, setBalance] = useState(0); // Initialize with zero
 
   const handleRegistration = async (e) => {
     e.preventDefault();
 
     const registrationData = {
-      Username: username,
+      UserName: username,
       Email: email,
-      Password: password
+      Password: password,
+      BirthDate: birthDate,
+      Address: address,
     };
 
     try {
@@ -27,7 +32,7 @@ const Registration = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        setErrorMessage(errorData.message);
+        setErrorMessage(errorData.title); // Assuming the error title is meaningful
         setSuccessMessage(""); // Clear success message on error
         return;
       }
@@ -35,6 +40,9 @@ const Registration = () => {
       const data = await response.json();
       setSuccessMessage(`Successful registration: ${data.userName}`);
       setErrorMessage(""); // Clear error message on success
+      setBirthDate(data.birthDate || ""); // Ensure birthDate is defined or set to empty string
+      setAddress(data.address || ""); // Ensure address is defined or set to empty string
+      setBalance(data.balance || 0); // Ensure balance is defined or set to 0
 
     } catch (error) {
       console.error("Error during registration:", error);
@@ -80,12 +88,42 @@ const Registration = () => {
             />
           </label>
         </div>
+        <div>
+          <label>
+            Birth Date:
+            <input
+              type="date"
+              value={birthDate}
+              onChange={(e) => setBirthDate(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Address:
+            <input
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </label>
+        </div>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         {successMessage && <p className="success-message">{successMessage}</p>}
         <div>
           <button type="submit">Register</button>
         </div>
       </form>
+      {balance !== 0 && (
+        <div className="registration-details">
+          <h4>Registration Details:</h4>
+          <p><strong>Birth Date:</strong> {birthDate}</p>
+          <p><strong>Address:</strong> {address}</p>
+          <p><strong>Balance:</strong> ${balance.toFixed(2)}</p>
+        </div>
+      )}
     </div>
   );
 };

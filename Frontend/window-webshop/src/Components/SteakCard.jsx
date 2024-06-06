@@ -1,4 +1,3 @@
-// SteakCard.js
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../Css/SteakCard.css'; // Adjust the path as necessary
@@ -13,9 +12,9 @@ const SteakCard = ({ steak }) => {
         <p className="steak-price">${steak.price}</p>
         {/* Additional details can be added here */}
       </div>
-      <a href={`/steak/${steak.id}`} className="steak-link">
+      <Link to={`/steak/${steak.id}`} className="steak-link">
         View Details
-      </a>
+      </Link>
     </div>
   );
 };

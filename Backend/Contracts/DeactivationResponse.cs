@@ -1,3 +1,6 @@
 namespace Backend.Contracts;
 
-public record DeactivationResponse();
+public record DeactivationResponse(
+    string UserName,
+    string Message = "Account successfully deactivated."
+);

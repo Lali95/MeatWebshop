@@ -1,10 +1,11 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-public class Order
+namespace Backend.Model
 {
-    [Key]
-    public int Id { get; set; }
+    public class Order
+    {
+        public int Id { get; set; }
+        public decimal OrderSum { get; set; } // Define OrderSum property
 
-    public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        // Navigation property
+        public ICollection<OrderItem> OrderItems { get; set; }
+    }
 }

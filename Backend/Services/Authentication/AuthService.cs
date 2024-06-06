@@ -1,30 +1,78 @@
+using Backend.Model;
 using Backend.Services.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace Vetproject.Service.Authentication;
-
 public class AuthService : IAuthService
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly ITokenService _tokenService;
 
-    public AuthService(UserManager<IdentityUser> userManager, ITokenService tokenService )
+    public AuthService(UserManager<ApplicationUser> userManager, ITokenService tokenService)
     {
         _userManager = userManager;
         _tokenService = tokenService;
     }
 
-    public async Task<AuthResult> RegisterAsync(string email, string username, string password)
+    public async Task<AuthResult> RegisterAsync(string email, string userName, string password, DateTime birthDate, string address, string role)
     {
-        var result = await _userManager.CreateAsync(
-            new IdentityUser { UserName = username, Email = email }, password);
+        var user = new ApplicationUser
+            { UserName = userName, Email = email, BirthDate = birthDate, Address = address, IsActive = true };
+        var result = await _userManager.CreateAsync(user, password);
 
         if (!result.Succeeded)
         {
-            return FailedRegistration(result, email, username);
+            return FailedRegistration(result, email, userName);
         }
 
-        return new AuthResult(true, email, username, "");
+        await _userManager.AddToRoleAsync(user, role);
+        return new AuthResult(true, email, userName, "");
+    }
+
+    public async Task<AuthResult> LoginAsync(string email, string password)
+    {
+        var managedUser = await _userManager.FindByEmailAsync(email);
+        if (managedUser == null)
+        {
+            return InvalidEmail(email);
+        }
+
+        var isPasswordValid = await _userManager.CheckPasswordAsync(managedUser, password);
+        if (!isPasswordValid)
+        {
+            return InvalidPassword(email, managedUser.UserName);
+        }
+
+        if (!managedUser.IsActive)
+        {
+            return InactiveUser(managedUser.UserName);
+        }
+
+        var roles = await _userManager.GetRolesAsync(managedUser);
+        var accessToken = _tokenService.CreateToken(managedUser, roles[0]);
+        return new AuthResult(true, managedUser.Email, managedUser.UserName, accessToken);
+    }
+
+    public async Task<AuthResult> DeactivateAsync(string email, string password)
+    {
+        var managedUser = await _userManager.FindByEmailAsync(email);
+        if (managedUser == null)
+        {
+            return InvalidEmail(email);
+        }
+        var isPasswordValid = await _userManager.CheckPasswordAsync(managedUser, password);
+        if (!isPasswordValid)
+        {
+            return InvalidPassword(email, managedUser.UserName);
+        }
+
+        if (!managedUser.IsActive)
+        {
+            return InactiveUser(managedUser.UserName);
+        }
+        
+        managedUser.IsActive = false;
+        await _userManager.UpdateAsync(managedUser);
+        return new AuthResult(true, $"", managedUser.UserName, "");
     }
 
     private static AuthResult FailedRegistration(IdentityResult result, string email, string username)
@@ -39,33 +87,13 @@ public class AuthService : IAuthService
         return authResult;
     }
     
-    public async Task<AuthResult> LoginAsync(string email, string password)
-    {
-        var managedUser = await _userManager.FindByEmailAsync(email);
-
-        if (managedUser == null)
-        {
-            return InvalidEmail(email);
-        }
-
-        var isPasswordValid = await _userManager.CheckPasswordAsync(managedUser, password);
-        if (!isPasswordValid)
-        {
-            return InvalidPassword(email, managedUser.UserName);
-        }
-
-        var accessToken = _tokenService.CreateToken(managedUser);
-
-        return new AuthResult(true, managedUser.Email, managedUser.UserName, accessToken);
-    }
-
     private static AuthResult InvalidEmail(string email)
     {
         var result = new AuthResult(false, email, "", "");
         result.ErrorMessages.Add("Bad credentials", "Invalid email");
         return result;
     }
-
+    
     private static AuthResult InvalidPassword(string email, string userName)
     {
         var result = new AuthResult(false, email, userName, "");
@@ -73,4 +101,10 @@ public class AuthService : IAuthService
         return result;
     }
 
+    private static AuthResult InactiveUser(string userName)
+    {
+        var result = new AuthResult(false, "", userName, "");
+        result.ErrorMessages.Add("Deleted user", "This user is not active anymore.");
+        return result;
+    }
 }

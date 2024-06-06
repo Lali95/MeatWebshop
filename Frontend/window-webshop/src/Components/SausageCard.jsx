@@ -1,4 +1,3 @@
-// SausageCard.js
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../Css/SausageCard.css'; // Adjust the path as necessary
@@ -13,9 +12,9 @@ const SausageCard = ({ sausage }) => {
         <p className="sausage-price">${sausage.price}</p>
         {/* Additional details can be added here */}
       </div>
-      <a href={`/sausage/${sausage.id}`} className="sausage-link">
+      <Link to={`/sausage/${sausage.id}`} className="sausage-link">
         View Details
-      </a>
+      </Link>
     </div>
   );
 };

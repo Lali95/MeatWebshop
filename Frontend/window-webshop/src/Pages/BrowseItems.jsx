@@ -9,28 +9,33 @@ function BrowseItems() {
   const [steaks, setSteaks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState('sausage');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchItems() {
       try {
-        const sausageResponse = await fetch('/api/sausage');
-        const steakResponse = await fetch('/api/steak');
+        const sausageResponse = await fetch('/api/Sausage');
+        const steakResponse = await fetch('/api/Steak');
 
         if (!sausageResponse.ok) {
-          throw new Error(`HTTP error! Status: ${sausageResponse.status}`);
+          throw new Error(`Failed to fetch sausages: ${sausageResponse.status}`);
         }
         if (!steakResponse.ok) {
-          throw new Error(`HTTP error! Status: ${steakResponse.status}`);
+          throw new Error(`Failed to fetch steaks: ${steakResponse.status}`);
         }
 
         const sausageData = await sausageResponse.json();
         const steakData = await steakResponse.json();
 
+        console.log('Sausage Data:', sausageData);
+        console.log('Steak Data:', steakData);
+
         setSausages(sausageData);
         setSteaks(steakData);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching items:', error);
+        console.error('Error fetching items:', error.message);
+        setError('Failed to fetch items. Please try again later.');
         setLoading(false);
       }
     }
@@ -42,8 +47,16 @@ function BrowseItems() {
     return <div>Loading...</div>;
   }
 
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   // Render cards based on selectedType
   const renderCards = (items) => {
+    if (!Array.isArray(items)) {
+      return null; // or handle this case as per your requirement
+    }
+    
     return items.map((item) => (
       <div key={item.id} className={`card-wrapper ${selectedType}-card`}>
         {selectedType === 'sausage' ? (
