@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import sausageImage from '../assets/sausage.png'; // Import the image
+import '../Css/SausageCard.css'
 
 const SausageCard = ({ sausage }) => {
   return (

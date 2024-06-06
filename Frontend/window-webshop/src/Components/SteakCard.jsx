@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import steakImage from '../assets/steak.jpg'; // Import the image
+import '../Css/SteakCard.css'
 
 const SteakCard = ({ steak }) => {
   return (

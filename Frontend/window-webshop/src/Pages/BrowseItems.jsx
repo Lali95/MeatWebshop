@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import SausageCard from '../Components/SausageCard';
 import SteakCard from '../Components/SteakCard';
-import '../Css/BrowseItems.css'; // Make sure to add any necessary styling here
+import '../Css/BrowseItems.css'; 
 
 function BrowseItems() {
   const [sausages, setSausages] = useState([]);
@@ -71,7 +70,7 @@ function BrowseItems() {
   return (
     <div className="browse-items">
       <h1>Browse Items</h1>
-      <div>
+      <div className="select">
         <label htmlFor="meatType">Select product: </label>
         <select
           id="meatType"
