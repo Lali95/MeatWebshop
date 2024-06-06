@@ -4,7 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Text;
+using Backend.Services.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -47,7 +49,8 @@ void AddServices()
 {
     builder.Services.AddControllers();
     builder.Services.AddDbContext<UsersContext>();
-
+    builder.Services.AddScoped<IAuthService, AuthService>();
+    
     builder.Services
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
@@ -66,6 +69,18 @@ void AddServices()
                 ),
             };
         });
+    builder.Services
+        .AddIdentityCore<IdentityUser>(options =>
+        {
+            options.SignIn.RequireConfirmedAccount = false;
+            options.User.RequireUniqueEmail = true;
+            options.Password.RequireDigit = false;
+            options.Password.RequiredLength = 5;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireLowercase = false;
+        })
+        .AddEntityFrameworkStores<UsersContext>();
 }
 
 void ConfigureSwagger()
