@@ -16,6 +16,9 @@ public class OrderItem
     [Required]
     public int Quantity { get; set; }
 
+    [Required]
+    public string Type { get; set; }  
+
     [ForeignKey("Order")]
     public int OrderId { get; set; }
     public Order Order { get; set; }
