@@ -122,10 +122,10 @@ void AddAuthentication()
             options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ClockSkew = TimeSpan.Zero,
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = false,
-                ValidateIssuerSigningKey = false,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
                 ValidIssuer = builder.Configuration["JwtSettings:ValidIssuer"],
                 ValidAudience = builder.Configuration["JwtSettings:ValidAudience"],
                  IssuerSigningKey = new SymmetricSecurityKey(

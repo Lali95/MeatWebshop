@@ -73,7 +73,7 @@ const Cart = () => {
               </li>
             ))}
           </ul>
-          <h1>Sum: {sum}</h1>
+          <h1>Sum: {sum} DOLLÁR</h1>
           {/* You can add an order functionality here */}
         </div>
       )}

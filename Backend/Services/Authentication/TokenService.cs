@@ -49,7 +49,7 @@ public class TokenService : ITokenService
             {
                 new (JwtRegisteredClaimNames.Sub, "TokenForTheApiWithAuth"),
                 new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new (JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)),
+                new System.Security.Claims.Claim("iat", EpochTime.GetIntDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64),
                 new (ClaimTypes.NameIdentifier, user.Id),
                 new (ClaimTypes.Name, user.UserName),
                 new (ClaimTypes.Email, user.Email)

@@ -88,7 +88,7 @@ function ItemDetails() {
       <img src={itemImage} alt={item.name} className="item-image" />
       <div className="item-info">
         <p className="item-type">Type: {item.type}</p>
-        <p className="item-weight">Weight: {item.weight}</p>
+        <p className="item-weight">Weight: {item.weight} g</p>
         <p className="item-price">Price: ${item.price.toFixed(2)}</p>
         <button className="add-to-cart-button" onClick={handleAddToCart}>
           Add to Cart
