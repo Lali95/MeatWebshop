@@ -75,7 +75,7 @@ function BrowseItems() {
         >
           <option value="sausage">Sausage</option>
           <option value="steak">Steak</option>
-          <option value="chicken thighs">chicken</option>
+          <option value="chicken thighs">Chicken</option>
           {/* Add other types as needed */}
         </select>
       </div>
