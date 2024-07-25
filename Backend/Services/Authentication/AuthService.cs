@@ -1,6 +1,9 @@
 using Backend.Model;
 using Backend.Services.Authentication;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class AuthService : IAuthService
 {
@@ -16,7 +19,13 @@ public class AuthService : IAuthService
     public async Task<AuthResult> RegisterAsync(string email, string userName, string password, DateTime birthDate, string address, string role)
     {
         var user = new ApplicationUser
-            { UserName = userName, Email = email, BirthDate = birthDate, Address = address, IsActive = true };
+        {
+            UserName = userName,
+            Email = email,
+            BirthDate = birthDate,
+            Address = address,
+            IsActive = true
+        };
         var result = await _userManager.CreateAsync(user, password);
 
         if (!result.Succeeded)
@@ -59,6 +68,7 @@ public class AuthService : IAuthService
         {
             return InvalidEmail(email);
         }
+        
         var isPasswordValid = await _userManager.CheckPasswordAsync(managedUser, password);
         if (!isPasswordValid)
         {
@@ -72,7 +82,31 @@ public class AuthService : IAuthService
         
         managedUser.IsActive = false;
         await _userManager.UpdateAsync(managedUser);
-        return new AuthResult(true, $"", managedUser.UserName, "");
+        return new AuthResult(true, "", managedUser.UserName, "");
+    }
+
+    public async Task<AuthResult> ActivateAsync(string email, string password)
+    {
+        var managedUser = await _userManager.FindByEmailAsync(email);
+        if (managedUser == null)
+        {
+            return InvalidEmail(email);
+        }
+        
+        var isPasswordValid = await _userManager.CheckPasswordAsync(managedUser, password);
+        if (!isPasswordValid)
+        {
+            return InvalidPassword(email, managedUser.UserName);
+        }
+
+        if (managedUser.IsActive)
+        {
+            return new AuthResult(false, "", managedUser.UserName, ""); // User is already active
+        }
+        
+        managedUser.IsActive = true;
+        await _userManager.UpdateAsync(managedUser);
+        return new AuthResult(true, "", managedUser.UserName, "");
     }
 
     private static AuthResult FailedRegistration(IdentityResult result, string email, string username)
