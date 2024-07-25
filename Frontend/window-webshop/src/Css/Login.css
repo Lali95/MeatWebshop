@@ -18,6 +18,8 @@
     color: #fff; /* Light color for better contrast on dark background */
     margin-bottom: 15px; /* Reduced margin */
     font-size: 1.5rem; /* Slightly smaller font size */
+    text-align: center; /* Center the heading text */
+    width: 100%; /* Make sure the heading takes the full width */
   }
   
   /* Style for the login form */
