@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Profile from "./Profile";
+import '../Css/Login.css'; // Import the updated CSS file
 
 const Login = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -12,7 +13,6 @@ const Login = () => {
     const accessToken = localStorage.getItem("accessToken");
     setIsLoggedIn(!!accessToken);
   }, [])
-  
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -30,7 +30,6 @@ const Login = () => {
         },
         body: JSON.stringify(loginData),
       });
-      console.log(loginData);
 
       if (!response.ok) {
         console.error("Login failed:", response.statusText);
@@ -43,7 +42,7 @@ const Login = () => {
       console.log("User Token:", data.token);
 
       localStorage.setItem("accessToken", data.token);
-      localStorage.setItem("userEmail", data.email)
+      localStorage.setItem("userEmail", data.email);
       navigate(`/profile`);
     } catch (error) {
       console.error("Error during login:", error);
@@ -54,34 +53,36 @@ const Login = () => {
     <div className="login-container">
       {isLoggedIn ? (
         <div>
-          <h3>You are already logged in.</h3>
+          <h3 className="login-heading">You are already logged in.</h3>
           <Profile />
         </div>
       ) : (
         <div>
-      <h3>Please, log in!</h3>
-      <form onSubmit={handleLogin}>
-        <label>
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        <button type="submit">Login</button>
-      </form>
-      </div>
+          <h3 className="login-heading">Log in</h3>
+          <form onSubmit={handleLogin} className="login-form">
+            <label className="login-label">
+              Email:
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="login-input"
+              />
+            </label>
+            <label className="login-label">
+              Password:
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="login-input"
+              />
+            </label>
+            <button type="submit" className="login-button">Login</button>
+          </form>
+        </div>
       )}
     </div>
   );
