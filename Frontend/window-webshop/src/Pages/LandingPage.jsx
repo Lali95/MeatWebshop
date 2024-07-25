@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import '../Css/LandingPage.css';
+import '../Css/LandingPage.css'; // Ensure this path is correct
 import Topbar from '../Components/Topbar';
 
 const LandingPage = () => {

@@ -2,13 +2,12 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Backend.Model;
-using Backend.Services.Authentication;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Backend.Model;
+using Microsoft.AspNetCore.Identity;
 
 
-namespace Backend.Service.Authentication;
+namespace Backend.Services.Authentication;
 
 public class TokenService : ITokenService
 {
@@ -50,7 +49,7 @@ public class TokenService : ITokenService
             {
                 new (JwtRegisteredClaimNames.Sub, "TokenForTheApiWithAuth"),
                 new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new (JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)),
+                new System.Security.Claims.Claim("iat", EpochTime.GetIntDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64),
                 new (ClaimTypes.NameIdentifier, user.Id),
                 new (ClaimTypes.Name, user.UserName),
                 new (ClaimTypes.Email, user.Email)

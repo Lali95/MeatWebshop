@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import SausageCard from '../Components/SausageCard';
-import SteakCard from '../Components/SteakCard';
-import '../Css/BrowseItems.css'; 
+import OrderItemCard from '../Components/OrderItemCard'; // Assuming a unified card component
+import '../Css/BrowseItems.css';
 
 function BrowseItems() {
-  const [sausages, setSausages] = useState([]);
-  const [steaks, setSteaks] = useState([]);
+  const [orderItems, setOrderItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState('sausage');
   const [error, setError] = useState(null);
@@ -13,24 +11,21 @@ function BrowseItems() {
   useEffect(() => {
     async function fetchItems() {
       try {
-        const sausageResponse = await fetch('/api/Sausage');
-        const steakResponse = await fetch('/api/Steak');
+        const response = await fetch(`/api/OrderItem?type=${selectedType}`);
 
-        if (!sausageResponse.ok) {
-          throw new Error(`Failed to fetch sausages: ${sausageResponse.status}`);
-        }
-        if (!steakResponse.ok) {
-          throw new Error(`Failed to fetch steaks: ${steakResponse.status}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch items: ${response.status}`);
         }
 
-        const sausageData = await sausageResponse.json();
-        const steakData = await steakResponse.json();
+        const data = await response.json();
+        console.log('Fetched data:', data);
 
-        console.log('Sausage Data:', sausageData);
-        console.log('Steak Data:', steakData);
-
-        setSausages(sausageData.$values); // Extracting $values array
-        setSteaks(steakData.$values); // Extracting $values array
+        // Check if data has the $values property and extract the array
+        if (data && Array.isArray(data.$values)) {
+          setOrderItems(data.$values);
+        } else {
+          throw new Error('Fetched data does not contain $values array');
+        }
         setLoading(false);
       } catch (error) {
         console.error('Error fetching items:', error.message);
@@ -40,7 +35,7 @@ function BrowseItems() {
     }
 
     fetchItems();
-  }, []);
+  }, [selectedType]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -50,19 +45,20 @@ function BrowseItems() {
     return <div>Error: {error}</div>;
   }
 
+  // Filter items based on selectedType
+  const filteredItems = Array.isArray(orderItems)
+    ? orderItems.filter(item => item.type.toLowerCase() === selectedType)
+    : [];
+
   // Render cards based on selectedType
   const renderCards = (items) => {
     if (!Array.isArray(items)) {
-      return null; // or handle this case as per your requirement
+      return null;
     }
-    
+
     return items.map((item) => (
       <div key={item.id} className={`card-wrapper ${selectedType}-card`}>
-        {selectedType === 'sausage' ? (
-          <SausageCard sausage={item} />
-        ) : (
-          <SteakCard steak={item} />
-        )}
+        <OrderItemCard item={item} />
       </div>
     ));
   };
@@ -71,18 +67,20 @@ function BrowseItems() {
     <div className="browse-items">
       <h1>Browse Items</h1>
       <div className="select">
-        <label htmlFor="meatType">Select product: </label>
+        <label htmlFor="itemType">Select product: </label>
         <select
-          id="meatType"
+          id="itemType"
           value={selectedType}
           onChange={(e) => setSelectedType(e.target.value)}
         >
           <option value="sausage">Sausage</option>
           <option value="steak">Steak</option>
+          <option value="chicken thighs">Chicken</option>
+          {/* Add other types as needed */}
         </select>
       </div>
       <div className="item-list">
-        {renderCards(selectedType === 'sausage' ? sausages : steaks)}
+        {renderCards(filteredItems)}
       </div>
     </div>
   );

@@ -1,55 +1,105 @@
-/* src/Css/NavBar.css */
+/* General box-sizing rule for all elements */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
+/* Ensure that the background image is applied to the body element */
+body {
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+/* Container for the entire layout */
+.nav-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh; /* Ensure it covers the full viewport height */
+  background-image: url('../assets/background.png'); /* Path to your background image */
+  background-size: cover; /* Ensure background covers the container */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Prevent repeating */
+  background-color: rgba(0, 0, 0, 0.6); /* Darker semi-transparent background */
+}
+
+/* Styling for the company name */
 .company-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo {
-    width: 80px; /* Adjust size as needed */
-    height: auto;
-    margin-right: 10px; /* Space between logo and company name */
-  }
-  
-  .nav-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .search-form {
-    margin-left: auto;
-  }
-  
-  .search-input {
-    margin-right: 10px;
-  }
-  
-  .search-button {
-    display: flex;
-    align-items: center;
-  }
-  
-  .suggestions-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 0.25rem;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-  
-  .suggestions-dropdown .list-group-item {
-    cursor: pointer;
-  }
-  
-  .suggestions-dropdown .list-group-item:hover {
-    background-color: #f8f9fa;
-  }
-  
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #5d5c5c; /* Light color for better contrast */
+  display: flex;
+  align-items: center;
+  margin: 0; /* Ensure no margin is causing shifts */
+}
+
+/* Styling for the logo */
+.logo {
+  width: 100px; /* Fixed size for the logo */
+  height: auto;
+  margin-right: 10px; /* Space between logo and company name */
+}
+
+/* Search form styling */
+.search-form {
+  margin-left: auto;
+}
+
+/* Styling for the search input */
+.search-input {
+  margin-right: 10px;
+  padding: 10px; /* Add padding to improve comfort */
+  border: 1px solid #555; /* Darker border for better integration with dark background */
+  border-radius: 20px; /* Rounded corners for a modern look */
+  background-color: #5d5c5c; /* Darker background for input field */
+  color: #a70000; /* Light text color for contrast */
+}
+
+/* Styling for the search button */
+.search-button {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px; /* Increased padding for better clickability */
+  background-color: #5d5c5c; /* Darker button background */
+  color: #fff; /* Light text color */
+  border: none;
+  border-radius: 20px; /* Rounded corners to match input field */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #555; /* Slightly lighter on hover */
+}
+
+/* Dropdown suggestions styling */
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #222; /* Darker background to match dark theme */
+  border: 1px solid #444; /* Darker border for better blending */
+  border-radius: 10px; /* Rounded corners for a modern look */
+  max-height: 200px;
+  overflow-y: auto;
+  box-sizing: border-box; /* Include padding and border in height calculation */
+}
+
+/* Styling for dropdown items */
+.suggestions-dropdown .list-group-item {
+  cursor: pointer;
+  padding: 10px; /* Add padding for clickable area */
+  color: #fff; /* Light text color */
+  background-color: #333; /* Darker background for dropdown items */
+}
+
+/* Hover effect for dropdown items */
+.suggestions-dropdown .list-group-item:hover {
+  background-color: #444; /* Slightly lighter background on hover */
+}

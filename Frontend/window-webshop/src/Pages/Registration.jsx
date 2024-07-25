@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../Css/Registration.css';
 
 const Registration = () => {
   const [username, setUsername] = useState("");
@@ -9,12 +10,20 @@ const Registration = () => {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [birthdate, setBirthdate] = useState("");
   const [address, setAddress] = useState("");
+  const [error, setError] = useState(""); // For displaying errors
+  const [loading, setLoading] = useState(false); // For handling loading state
   const navigate = useNavigate();
 
   const handleRegistration = async (e) => {
     e.preventDefault();
 
- 
+    if (password !== confirmPassword) {
+      setPasswordMatch(false);
+      return;
+    }
+
+    setPasswordMatch(true);
+    setLoading(true);
 
     const registrationData = {
       UserName: username,
@@ -34,7 +43,8 @@ const Registration = () => {
       });
 
       if (!response.ok) {
-        console.error("Registration failed:", response.statusText);
+        const errorData = await response.json();
+        setError(errorData.error || "Registration failed");
         return;
       }
 
@@ -44,64 +54,93 @@ const Registration = () => {
       console.log("User Token:", data.token);
 
       navigate(`/login`);
-  
     } catch (error) {
       console.error("Error during registration:", error);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  console.log("password match", passwordMatch);
   return (
     <div className="registration-container">
-      <h4>Please, enter your data for registering to MovieMerchShop</h4>
-      <form onSubmit={handleRegistration}>
-        <label>
+      <h4 className="registration-heading">Enter your data</h4>
+      <form className="registration-form" onSubmit={handleRegistration}>
+        <label className="registration-label">
           Select a username:
           <input
+            className="registration-input"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            aria-label="Username"
           />
         </label>
-        <label>
+        <label className="registration-label">
           Your email address:
           <input
+            className="registration-input"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            aria-label="Email"
           />
         </label>
-        <label>
+        <label className="registration-label">
           Your password:
           <input
+            className="registration-input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            aria-label="Password"
           />
         </label>
-      
-        <label>
+        <label className="registration-label">
+          Confirm password:
+          <input
+            className="registration-input"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            aria-label="Confirm Password"
+          />
+        </label>
+        <label className="registration-label">
           Date of birth:
           <input
+            className="registration-input"
             type="date"
             value={birthdate}
             onChange={(e) => setBirthdate(e.target.value)}
             required
+            aria-label="Date of Birth"
           />
         </label>
-        <label>
+        <label className="registration-label">
           Address:
           <input
+            className="registration-input"
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             required
+            aria-label="Address"
           />
         </label>
-        <button type="submit">Register</button>
+        {error && <p className="error-text">{error}</p>}
+        <button
+          type="submit"
+          className="registration-button"
+          disabled={loading} // Disable button while loading
+        >
+          {loading ? "Registering..." : "Register"}
+        </button>
+        {!passwordMatch && <p className="error-text">Passwords do not match.</p>}
       </form>
     </div>
   );

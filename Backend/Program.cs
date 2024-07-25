@@ -1,15 +1,18 @@
+using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using Backend.Data;
+using Backend.Model;
+using Backend.Repository;
+using Backend.Services.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Backend.Data;
-using Backend.Model;
-using Backend.Service.Authentication;
-using Backend.Repository;
-using Backend.Services.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +25,6 @@ AddIdentity();
 
 var app = builder.Build();
 
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -30,7 +32,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -44,25 +45,24 @@ app.UseCors(options =>
 AddRoles();
 AddAdmin();
 
+// Populate the database with initial data
+//PopulateDatabase(app).Wait();
 
 app.MapControllers();
-
 app.Run();
-
-
 
 void AddServices()
 {
     builder.Services.AddControllers().AddJsonOptions(options =>
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-    builder.Services.AddControllers().AddJsonOptions(options =>
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-    
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
 }
-
 
 void ConfigureSwagger()
 {
@@ -80,7 +80,7 @@ void ConfigureSwagger()
             Scheme = "Bearer"
         });
         option.AddSecurityRequirement(new OpenApiSecurityRequirement
-        { 
+        {
             {
                 new OpenApiSecurityScheme
                 {
@@ -96,10 +96,8 @@ void ConfigureSwagger()
     });
 }
 
-
 void AddDbContext()
 {
-
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped
     );
@@ -108,7 +106,6 @@ void AddDbContext()
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
 }
-
 
 void AddAuthentication()
 {
@@ -125,12 +122,11 @@ void AddAuthentication()
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = builder.Configuration["JwtSettings:ValidIssuer"],
                 ValidAudience = builder.Configuration["JwtSettings:ValidAudience"],
-                 IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["JwtIssuerSigningKey"])),
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(builder.Configuration["JwtIssuerSigningKey"]))
             };
         });
 }
-
 
 void AddIdentity()
 {
@@ -139,17 +135,15 @@ void AddIdentity()
         {
             options.SignIn.RequireConfirmedAccount = false;
             options.User.RequireUniqueEmail = true;
-            options.Password.RequireDigit = false; 
+            options.Password.RequireDigit = false;
             options.Password.RequiredLength = 6;
-            options.Password.RequireNonAlphanumeric = false; 
-            options.Password.RequireUppercase = false; 
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
             options.Password.RequireLowercase = false;
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<UsersContext>();
 }
-
-
 
 void AddRoles()
 {
@@ -162,7 +156,6 @@ void AddRoles()
     var tUser = CreateUserRole(roleManager);
     tUser.Wait();
 }
-
 
 async Task CreateAdminRole(RoleManager<IdentityRole> roleManager)
 {
@@ -187,7 +180,7 @@ async Task CreateAdminIfNotExists()
     var adminInDb = await userManager.FindByEmailAsync("admin@admin.com");
     if (adminInDb == null)
     {
-        var admin = new ApplicationUser { UserName = "admin", Email = "admin@admin.com", BirthDate = new DateTime(2000,12,12), Address = "admin"};
+        var admin = new ApplicationUser { UserName = "admin", Email = "admin@admin.com", BirthDate = new DateTime(2000, 12, 12), Address = "admin" };
         var adminCreated = await userManager.CreateAsync(admin, "admin123");
 
         if (adminCreated.Succeeded)
@@ -197,7 +190,68 @@ async Task CreateAdminIfNotExists()
     }
 }
 
-public partial class Program
+async Task PopulateDatabase(WebApplication app)
 {
-}
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    
+    // Ensure the database is created
+    await context.Database.EnsureCreatedAsync();
 
+    // Create an example order
+    var order = new Order
+    {
+        // Initialize Order properties if needed
+    };
+
+    context.Orders.Add(order);
+    await context.SaveChangesAsync(); // Save to get OrderId populated
+
+    // Create order items
+    var orderItems = new List<OrderItem>
+    {
+        new OrderItem
+        {
+            Name = "Classic Sausage",
+            Price = 10.99m,
+            Quantity = 2,
+            Type = "sausage",
+            OrderId = order.Id  // Ensure this is set
+        },
+        new OrderItem
+        {
+            Name = "Ribeye Steak",
+            Price = 29.99m,
+            Quantity = 1,
+            Type = "steak",
+            OrderId = order.Id  // Ensure this is set
+        },
+        new OrderItem
+        {
+            Name = "Chicken Thighs",
+            Price = 12.99m,
+            Quantity = 3,
+            Type = "chicken thighs",
+            OrderId = order.Id  // Ensure this is set
+        },
+        new OrderItem
+        {
+            Name = "Spicy Sausage",
+            Price = 11.99m,
+            Quantity = 1,
+            Type = "sausage",
+            OrderId = order.Id  // Ensure this is set
+        },
+        new OrderItem
+        {
+            Name = "Filet Mignon",
+            Price = 35.99m,
+            Quantity = 1,
+            Type = "steak",
+            OrderId = order.Id  // Ensure this is set
+        }
+    };
+
+    context.OrderItems.AddRange(orderItems);
+    await context.SaveChangesAsync();
+}

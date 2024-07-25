@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import steakImage from '../assets/steak.jpg';
+import steakImage from '../assets/steak.png';
 import sausageImage from '../assets/sausage.png';
 import '../Css/ItemDetails.css';
 
@@ -13,7 +13,17 @@ function ItemDetails() {
   useEffect(() => {
     async function fetchItemDetails() {
       try {
-        const response = await fetch(`/api/${itemType}/${itemId}`);
+        const token = localStorage.getItem('accessToken'); 
+        console.log(token)
+        const response = await fetch(`/api/${itemType}/${itemId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`, 
+            'Content-Type': 'application/json'
+          },
+        });
+
+      
+       
         
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -78,8 +88,8 @@ function ItemDetails() {
       <img src={itemImage} alt={item.name} className="item-image" />
       <div className="item-info">
         <p className="item-type">Type: {item.type}</p>
-        <p className="item-weight">Weight: {item.weight}</p>
-        <p className="item-price">Price: ${item.price}</p>
+        <p className="item-weight">Weight: {item.weight} g</p>
+        <p className="item-price">Price: ${item.price.toFixed(2)}</p>
         <button className="add-to-cart-button" onClick={handleAddToCart}>
           Add to Cart
         </button>
