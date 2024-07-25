@@ -1,22 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import images from '../assets/images'; // Import the images
 import '../Css/OrderItemCard.css';
 
 function OrderItemCard({ item }) {
+  // Get the image URL based on the item's type
+  const imageUrl = images[item.type.toLowerCase()] || images.meats; // Default to sausage image if type is not found
+
   return (
     <div className="order-item-card">
-      <div className="order-item-card-content">
-        {/* You can include an image here if available */}
-        {/* <div className="order-item-card-image">
-          <img src={item.imageUrl} alt={item.name} />
-        </div> */}
-        <div className="order-item-card-details">
-          <h3>{item.name}</h3>
-          <p>Price: ${item.price.toFixed(2)}</p>
-          <p>Quantity: {item.quantity}</p>
-          <p>Type: {item.type}</p>
-          {/* Add more details and styling as needed */}
-        </div>
+      <div className="order-item-card-image">
+        <img src={imageUrl} alt={item.name} />
+      </div>
+      <div className="order-item-card-details">
+        <h3>{item.name}</h3>
+        <p>Price: ${item.price.toFixed(2)}</p>
+        <p>Quantity: {item.quantity}</p>
+        <p>Type: {item.type}</p>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import steakImage from '../assets/steak.jpg';
+import steakImage from '../assets/steak.png';
 import sausageImage from '../assets/sausage.png';
 import '../Css/ItemDetails.css';
 

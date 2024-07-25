@@ -1,10 +1,33 @@
-
+/* General box-sizing rule for all elements */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+/* Ensure that the background image is applied to the body element */
+body {
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+/* Container for the entire layout */
+.nav-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh; /* Ensure it covers the full viewport height */
+  background-image: url('../assets/background.png'); /* Path to your background image */
+  background-size: cover; /* Ensure background covers the container */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Prevent repeating */
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+}
+
+/* Styling for the company name */
 .company-name {
   font-size: 1.5rem;
   font-weight: bold;
@@ -13,36 +36,32 @@
   margin: 0; /* Ensure no margin is causing shifts */
 }
 
+/* Styling for the logo */
 .logo {
   width: 80px; /* Fixed size for the logo */
   height: auto;
   margin-right: 10px; /* Space between logo and company name */
 }
 
-.nav-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0; /* Ensure no margin is causing shifts */
-  padding: 0; /* Ensure no padding is causing shifts */
-  position: relative; /* Ensure positioning context for absolute children */
-}
-
+/* Search form styling */
 .search-form {
   margin-left: auto;
 }
 
+/* Styling for the search input */
 .search-input {
   margin-right: 10px;
   padding: 5px; /* Add padding to prevent overlap */
 }
 
+/* Styling for the search button */
 .search-button {
   display: flex;
   align-items: center;
   padding: 5px; /* Add padding to prevent overlap */
 }
 
+/* Dropdown suggestions styling */
 .suggestions-dropdown {
   position: absolute;
   top: 100%;
@@ -57,11 +76,13 @@
   box-sizing: border-box; /* Include padding and border in height calculation */
 }
 
+/* Styling for dropdown items */
 .suggestions-dropdown .list-group-item {
   cursor: pointer;
   padding: 10px; /* Add padding for clickable area */
 }
 
+/* Hover effect for dropdown items */
 .suggestions-dropdown .list-group-item:hover {
   background-color: #f8f9fa;
 }

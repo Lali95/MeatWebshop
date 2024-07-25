@@ -1,75 +1,50 @@
-/* Apply the card styling to OrderItemCard */
+/* src/Css/OrderItemCard.css */
+
 .order-item-card {
     background: #fff;
     border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    text-decoration: none; /* Ensure the card itself has no underline */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    width: 250px; /* Fixed width for the card */
-    height: 300px; /* Fixed height to maintain consistency */
-    box-sizing: border-box; /* Include padding and border in width and height calculations */
-}
-
-.order-item-card a {
-    text-decoration: none; /* Remove underline from links */
-    color: inherit; /* Inherit the color from the parent */
-}
-
-.order-item-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.order-item-card-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%; /* Full height within the card */
-    box-sizing: border-box; /* Include padding and border in height calculation */
-}
-
-.order-item-card-image {
-    text-align: center; /* Center the image */
-    padding: 10px; /* Add padding around the image */
-    box-sizing: border-box; /* Include padding in width calculation */
-}
-
-.order-item-card-image img {
-    max-width: 100%; /* Ensure the image fits within the card */
-    height: auto; /* Maintain aspect ratio of the image */
-    border-bottom: 1px solid #ddd; /* Optional: Add a border for separation */
-}
-
-.order-item-card-details {
+    align-items: center;
+    text-align: center;
     padding: 15px;
-    text-align: center; /* Center the text horizontally */
-    flex: 1; /* Ensure details section takes up remaining space */
+    transition: box-shadow 0.3s ease;
+    height: auto; /* Allow height to adjust based on content */
+    width: 250px; /* Fixed width to maintain consistency */
+    box-sizing: border-box; /* Include padding and border in width and height calculations */
+  }
+  
+  .order-item-card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .order-item-card-image {
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
-    box-sizing: border-box; /* Include padding in width calculation */
-    overflow: hidden; /* Prevent overflow from altering card size */
-}
-
-.order-item-card-details h3 {
-    font-size: 1.5rem;
+    justify-content: center; /* Center the image horizontally */
+    margin-bottom: 10px; /* Space between image and details */
+  }
+  
+  .order-item-card-image img {
+    max-width: 90%; /* Ensure image fits within the card */
+    height: auto; /* Maintain aspect ratio */
+  }
+  
+  .order-item-card-details {
+    padding: 0 10px; /* Add horizontal padding for text */
+  }
+  
+  .order-item-card-details h3 {
+    font-size: 1.25rem;
     color: #333;
-    margin-bottom: 10px;
-    overflow: hidden; /* Prevent overflow */
-    text-overflow: ellipsis; /* Add ellipsis if text overflows */
-    white-space: nowrap; /* Prevent text from wrapping */
-}
-
-.order-item-card-details p {
+    margin: 10px 0;
+  }
+  
+  .order-item-card-details p {
     font-size: 1rem;
     color: #666;
-    margin-bottom: 5px;
-    overflow: hidden; /* Prevent overflow */
-    text-overflow: ellipsis; /* Add ellipsis if text overflows */
-    white-space: nowrap; /* Prevent text from wrapping */
-}
+    margin: 5px 0;
+  }
+  
