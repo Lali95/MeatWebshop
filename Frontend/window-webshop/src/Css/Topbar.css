@@ -24,13 +24,14 @@ body {
   background-size: cover; /* Ensure background covers the container */
   background-position: center; /* Center the background image */
   background-repeat: no-repeat; /* Prevent repeating */
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  background-color: rgba(0, 0, 0, 0.6); /* Darker semi-transparent background */
 }
 
 /* Styling for the company name */
 .company-name {
   font-size: 1.5rem;
   font-weight: bold;
+  color: #5d5c5c; /* Light color for better contrast */
   display: flex;
   align-items: center;
   margin: 0; /* Ensure no margin is causing shifts */
@@ -38,7 +39,7 @@ body {
 
 /* Styling for the logo */
 .logo {
-  width: 80px; /* Fixed size for the logo */
+  width: 100px; /* Fixed size for the logo */
   height: auto;
   margin-right: 10px; /* Space between logo and company name */
 }
@@ -51,14 +52,28 @@ body {
 /* Styling for the search input */
 .search-input {
   margin-right: 10px;
-  padding: 5px; /* Add padding to prevent overlap */
+  padding: 10px; /* Add padding to improve comfort */
+  border: 1px solid #555; /* Darker border for better integration with dark background */
+  border-radius: 20px; /* Rounded corners for a modern look */
+  background-color: #5d5c5c; /* Darker background for input field */
+  color: #a70000; /* Light text color for contrast */
 }
 
 /* Styling for the search button */
 .search-button {
   display: flex;
   align-items: center;
-  padding: 5px; /* Add padding to prevent overlap */
+  padding: 10px 20px; /* Increased padding for better clickability */
+  background-color: #5d5c5c; /* Darker button background */
+  color: #fff; /* Light text color */
+  border: none;
+  border-radius: 20px; /* Rounded corners to match input field */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #555; /* Slightly lighter on hover */
 }
 
 /* Dropdown suggestions styling */
@@ -68,9 +83,9 @@ body {
   left: 0;
   right: 0;
   z-index: 1000;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
+  background-color: #222; /* Darker background to match dark theme */
+  border: 1px solid #444; /* Darker border for better blending */
+  border-radius: 10px; /* Rounded corners for a modern look */
   max-height: 200px;
   overflow-y: auto;
   box-sizing: border-box; /* Include padding and border in height calculation */
@@ -80,9 +95,11 @@ body {
 .suggestions-dropdown .list-group-item {
   cursor: pointer;
   padding: 10px; /* Add padding for clickable area */
+  color: #fff; /* Light text color */
+  background-color: #333; /* Darker background for dropdown items */
 }
 
 /* Hover effect for dropdown items */
 .suggestions-dropdown .list-group-item:hover {
-  background-color: #f8f9fa;
+  background-color: #444; /* Slightly lighter background on hover */
 }
