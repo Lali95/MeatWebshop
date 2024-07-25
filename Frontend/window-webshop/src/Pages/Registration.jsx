@@ -67,7 +67,7 @@ const Registration = () => {
       <h4 className="registration-heading">Enter your data</h4>
       <form className="registration-form" onSubmit={handleRegistration}>
         <label className="registration-label">
-          Select a username:
+          Username:
           <input
             className="registration-input"
             type="text"
