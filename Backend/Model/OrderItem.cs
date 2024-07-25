@@ -19,7 +19,9 @@ public class OrderItem
     [Required]
     public string Type { get; set; }  
 
-    [ForeignKey("Order")]
-    public int OrderId { get; set; }
+    [Required]
+    public int OrderId { get; set; }  // Make sure this is marked as [Required]
+
+    [ForeignKey("OrderId")]
     public Order Order { get; set; }
 }
