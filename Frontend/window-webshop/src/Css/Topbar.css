@@ -54,10 +54,11 @@ body {
   margin-right: 10px;
   padding: 10px; /* Add padding to improve comfort */
   border: none; /* Remove border */
+  outline: none; /* Remove default outline */
+  box-shadow: none; /* Remove any shadow that might appear as a border */
   border-radius: 20px; /* Rounded corners for a modern look */
   background-color: #ffffff; /* Darker background for input field */
   color: #000000; /* Light text color for contrast */
-  outline: none; /* Remove default outline */
 }
 
 /* Styling for the search button */
