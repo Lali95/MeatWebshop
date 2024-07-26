@@ -1,127 +1,108 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../Css/Profile.css"; // Ensure this path is correct
+import React, { useState, useEffect } from 'react';
+import '../Css/Profile.css'; 
 
 const Profile = () => {
-  const [userInfo, setUserInfo] = useState(null);
-  const [uploadBalance, setUploadBalance] = useState(false);
-  const [amount, setAmount] = useState("");
-  const navigate = useNavigate();
+  const [balance, setBalance] = useState(0);
+  const [balanceUpdate, setBalanceUpdate] = useState('');
+  const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      const email = localStorage.getItem("userEmail");
-      try {
-        const response = await fetch(`/api/Auth/GetUserByEmail/${email}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
 
-        if (!response.ok) {
-          console.error("Failed to fetch user information:", response.statusText);
-          return;
-        }
+  // Fetch the user's balance
+  const fetchBalance = async () => {
+    const email = localStorage.getItem('userEmail');
+    const token = localStorage.getItem('accessToken');
 
-        const data = await response.json();
-        setUserInfo(data);
-      } catch (error) {
-        console.error("Error during user information retrieval:", error);
-      }
-    };
-
-    fetchUserInfo();
-  }, []);
-
-  const handleBalanceClick = () => {
-    setUploadBalance(!uploadBalance);
-  };
-
-  const handleBalanceUpdate = async (e) => {
-    e.preventDefault();
+    if (!email || !token) {
+      console.error('User email or token not found in local storage');
+      return;
+    }
 
     try {
-      const balanceResponse = await fetch("/api/Auth/UpBalance", {
-        method: "PATCH",
+      const response = await fetch(`/api/Auth/GetUserByEmail/${email}`, {
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: userInfo.email,
-          balance: parseFloat(amount),
-        }),
-      });
-
-      if (!balanceResponse.ok) {
-        console.error(`Failed to update balance. Status: ${balanceResponse.status}`);
-        return;
-      }
-
-      // Fetch updated user info
-      const updatedResponse = await fetch(`/api/Auth/GetUserByEmail/${userInfo.email}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          'Authorization': `Bearer ${token}`
         },
       });
 
-      if (!updatedResponse.ok) {
-        console.error("Failed to fetch updated user information:", updatedResponse.statusText);
+      if (!response.ok) {
+        console.error('Failed to fetch balance:', response.statusText);
+        setError('Failed to fetch balance. Please try again later.');
         return;
       }
 
-      const updatedData = await updatedResponse.json();
-      setUserInfo(updatedData);
-
-      // Clear the input and hide the form
-      setAmount("");
-      setUploadBalance(false);
+      const user = await response.json();
+      setBalance(user.balance || 0); // Update state with the fetched balance
     } catch (error) {
-      console.error("Error during balance update:", error);
+      console.error('Error fetching balance:', error);
+      setError('Error fetching balance. Please try again later.');
     }
   };
 
-  const handleLogOut = () => {
-    localStorage.clear();
-    navigate("/");
+  // Update the user's balance
+  const updateBalance = async (e) => {
+    e.preventDefault();
+
+    const email = localStorage.getItem('userEmail');
+    const token = localStorage.getItem('accessToken');
+
+    if (!email || !token) {
+      console.error('User email or token not found in local storage');
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/Auth/UpBalance`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ email, balance: parseFloat(balanceUpdate) }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Failed to update balance:', errorData.message || response.statusText);
+        setError('Failed to update balance. Please try again later.');
+        return;
+      }
+
+      alert('Balance updated successfully');
+      setBalanceUpdate(''); // Clear the input field
+      await fetchBalance(); // Fetch the latest balance from the server
+    } catch (error) {
+      console.error('Error updating balance:', error);
+      setError('Error updating balance. Please try again later.');
+    }
   };
 
-  if (!userInfo) {
-    return <p>Loading...</p>;
-  };
+  // Fetch the balance on component mount
+  useEffect(() => {
+    fetchBalance();
+  }, []);
 
   return (
     <div className="profile-container">
-      <p className="profile-welcome">Welcome, {userInfo.userName}</p>
-      <p className="profile-balance">Balance: ${userInfo.balance.toFixed(2)}</p>
-      <button className="profile-button" onClick={handleBalanceClick}>
-        {uploadBalance ? "Cancel" : "Upload balance"}
-      </button>
-      {uploadBalance && (
-        <div className="balance-form-container">
-          <h2>Upload balance</h2>
-          <form onSubmit={handleBalanceUpdate}>
-            <label>
-              Amount:
-              <input
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                required
-                className="profile-input"
-              />
-            </label>
-            <button type="submit" className="profile-button">
-              Upload
-            </button>
-          </form>
-        </div>
-      )}
-      <p className="profile-empty-paragraph"></p>
-      <button className="profile-button" onClick={handleLogOut}>
-        Log out
-      </button>
+      <h2>Profile</h2>
+      {error && <p className="error-message">{error}</p>}
+      <div className="profile-details">
+        <h3>Your Balance</h3>
+        <p>${balance.toFixed(2)}</p>
+      </div>
+      <form onSubmit={updateBalance} className="balance-form">
+        <label>
+          Update Balance:
+          <input
+            type="number"
+            step="1"
+            value={balanceUpdate}
+            onChange={(e) => setBalanceUpdate(e.target.value)}
+            required
+          />
+        </label>
+        <button type="submit">Update Balance</button>
+      </form>
     </div>
   );
 };

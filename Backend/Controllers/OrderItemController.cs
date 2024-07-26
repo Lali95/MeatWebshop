@@ -98,6 +98,7 @@ namespace Backend.Controllers
         }
 
         // DELETE: api/OrderItem/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrderItem(int id)
         {

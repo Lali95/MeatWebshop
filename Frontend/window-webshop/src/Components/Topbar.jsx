@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+// src/Components/Topbar.jsx
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Navbar, Nav, Form, FormControl, Button, ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import '../Css/Topbar.css';
 import logo from '../assets/logo.png';
+import { AuthContext } from '../Contexts/AuthContext.jsx';  // Ensure correct path and extension
 
 const Topbar = () => {
+  const { isAuthenticated, logout } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -105,18 +108,28 @@ const Topbar = () => {
           </ListGroup>
         )}
       </Form>
-      <Nav.Link as={Link} to="/register" className="btn btn-primary m-2">
-        Register
-      </Nav.Link>
-      <Nav.Link as={Link} to="/profile" className="btn btn-primary m-2">
-        Profile
-      </Nav.Link>
-      <Nav.Link as={Link} to="/login" className="btn btn-primary m-2">
-        Login
-      </Nav.Link>
-      <Nav.Link as={Link} to="/cart" className="btn btn-primary m-2">
-          Cart
-        </Nav.Link>
+      {isAuthenticated ? (
+        <>
+          <Nav.Link as={Link} to="/profile" className="btn btn-primary m-2">
+            Profile
+          </Nav.Link>
+          <Nav.Link as={Link} to="/cart" className="btn btn-primary m-2">
+            Cart
+          </Nav.Link>
+          <Button onClick={logout} className="btn btn-danger m-2">
+            Logout
+          </Button>
+        </>
+      ) : (
+        <>
+          <Nav.Link as={Link} to="/register" className="btn btn-primary m-2">
+            Register
+          </Nav.Link>
+          <Nav.Link as={Link} to="/login" className="btn btn-primary m-2">
+            Login
+          </Nav.Link>
+        </>
+      )}
     </Navbar>
   );
 };

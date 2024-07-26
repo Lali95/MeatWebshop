@@ -1,15 +1,17 @@
+// src/main.jsx
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import LandingPage from './Pages/LandingPage';
 import AboutUs from './Pages/AboutUs';
-import BrowseItems from './Pages/BrowseItems';
-import Registration from './Pages/Registration';
-import Login from './Pages/Login';
-import ItemDetails from './Pages/ItemDetails';
-import Cart from './Pages/Cart';
-import Profile from './Pages/Profile';
+import BrowseItems from './Pages/BrowseItems.jsx';
+import Registration from './Pages/Registration.jsx';
+import Login from './Pages/Login.jsx';
+import ItemDetails from './Pages/ItemDetails.jsx';
+import Cart from './Pages/Cart.jsx';
+import Profile from './Pages/Profile.jsx';
+import { AuthProvider } from './Contexts/AuthContext.jsx';  // Ensure correct path and extension
 
 const router = createBrowserRouter([
   {
@@ -37,7 +39,7 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: 'item/:itemType/:itemId',
+        path: ':itemType/:itemId',
         element: <ItemDetails />,
       },
       {
@@ -55,5 +57,7 @@ const router = createBrowserRouter([
 const root = createRoot(document.getElementById('root'));
 
 root.render(
-  <RouterProvider router={router} />
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 );

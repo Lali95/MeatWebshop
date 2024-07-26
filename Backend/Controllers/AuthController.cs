@@ -62,7 +62,7 @@ namespace Backend.Controllers
             return Ok(new AuthResponse(result.Email, result.UserName, result.Token));
         }
 
-        [Authorize]
+        [Authorize(Roles = "User")]
         [HttpGet("GetUserByEmail/{userEmail}")]
         public async Task<ActionResult<ApplicationUser>> GetUserByEmail(string userEmail)
         {
@@ -90,13 +90,14 @@ namespace Backend.Controllers
 
             if (success)
             {
-                return Ok("Balance updated successfully");
+                return Ok(new { message = "Balance updated successfully" });
             }
             else
             {
-                return BadRequest("Failed to update balance");
+                return BadRequest(new { message = "Failed to update balance" });
             }
         }
+
 
         [HttpDelete("DeleteTestUser")]
         public async Task<IActionResult> DeleteUserByEmailAsync()
