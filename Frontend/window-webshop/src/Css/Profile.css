@@ -4,29 +4,35 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: auto; /* Adjust height based on content */
-  max-width: 400px; /* Limit width for consistency */
-  margin: 0 auto; /* Center container horizontally */
-  background-color: rgba(0, 0, 0, 0.6); /* Darker semi-transparent background */
-  font-family: Arial, sans-serif; /* Consistent font */
-  padding: 20px; /* Padding for content spacing */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+  min-height: auto;
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Heading for the profile page */
 .profile-heading {
-  color: #fff !important; /* White color for contrast on dark background */
-  margin-bottom: 15px; /* Reduced margin for compactness */
-  font-size: 1.5rem; /* Consistent with registration form */
-  text-align: center; /* Center the heading */
+  color: #fff; /* White color for contrast on dark background */
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  text-align: center;
 }
 
 /* Text Paragraphs */
 .profile-container p {
-  font-size: 1rem; /* Consistent font size */
-  margin: 10px 0; /* Compact margin */
-  color: #fff !important; /* White color for text */
+  font-size: 1rem;
+  margin: 10px 0;
+  color: #fff; /* Ensure all paragraphs have white text color */
+}
+
+/* Profile Details Section */
+.profile-details {
+  color: #fff; /* Ensure text color is white for balance details */
+  text-align: center; /* Center the content */
 }
 
 /* Balance Form */
@@ -34,52 +40,52 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%; /* Full width of the container */
+  width: 100%;
 }
 
 /* Balance Label */
 .balance-label {
-  margin-bottom: 8px; /* Compact margin */
-  color: #fff !important; /* White color for contrast */
-  font-weight: bold; /* Bold labels */
-  text-align: left; /* Align labels with inputs */
-  width: 100%; /* Full width */
+  margin-bottom: 8px;
+  color: #fff; /* White color for labels */
+  font-weight: bold;
+  text-align: left;
+  width: 100%;
 }
 
 /* Balance Input */
 .balance-input {
-  width: 100%; /* Full width */
-  max-width: 300px; /* Consistent max-width */
-  padding: 10px; /* Padding for input fields */
-  margin-bottom: 15px; /* Compact margin */
-  border: 1px solid #555; /* Darker border */
-  border-radius: 6px; /* Rounded corners */
-  font-size: 1rem; /* Consistent font size */
-  box-sizing: border-box; /* Include padding and border in width calculation */
-  background-color: #222; /* Darker background for input */
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: #222;
   color: #fff; /* White text color */
 }
 
 /* Balance Button */
 .balance-button {
-  padding: 10px 20px; /* Consistent padding */
-  background-color: #007bff; /* Bright color for contrast */
-  color: #fff; /* White text color */
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
   border: none;
-  border-radius: 6px; /* Rounded corners */
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-size: 1rem; /* Consistent font size */
+  font-size: 1rem;
 }
 
 .balance-button:hover {
-  background-color: #0056b3; /* Darker shade on hover */
+  background-color: #0056b3;
 }
 
 /* Error Message */
 .error-message {
-  color: #d9534f; /* Bright red for error messages */
-  margin-top: 10px; /* Adjust margin for compact form */
-  font-size: 0.875rem; /* Smaller font size for error messages */
-  text-align: center; /* Center align error messages */
+  color: #d9534f;
+  margin-top: 10px;
+  font-size: 0.875rem;
+  text-align: center;
 }

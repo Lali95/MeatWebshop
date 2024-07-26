@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import '../Css/Profile.css'; 
+import '../Css/Profile.css'; // Ensure this path is correct
 
 const Profile = () => {
-  const [balance, setBalance] = useState(0);
+  const [userData, setUserData] = useState({
+    balance: 0,
+    name: '',
+    email: ''
+  });
   const [balanceUpdate, setBalanceUpdate] = useState('');
   const [error, setError] = useState('');
 
-
-  // Fetch the user's balance
-  const fetchBalance = async () => {
+  // Fetch the user's data
+  const fetchUserData = async () => {
     const email = localStorage.getItem('userEmail');
     const token = localStorage.getItem('accessToken');
 
@@ -26,16 +29,20 @@ const Profile = () => {
       });
 
       if (!response.ok) {
-        console.error('Failed to fetch balance:', response.statusText);
-        setError('Failed to fetch balance. Please try again later.');
+        console.error('Failed to fetch user data:', response.statusText);
+        setError('Failed to fetch user data. Please try again later.');
         return;
       }
 
       const user = await response.json();
-      setBalance(user.balance || 0); // Update state with the fetched balance
+      setUserData({
+        balance: user.balance || 0,
+        name: user.userName || 'N/A',  
+        email: user.email || 'N/A'
+      });
     } catch (error) {
-      console.error('Error fetching balance:', error);
-      setError('Error fetching balance. Please try again later.');
+      console.error('Error fetching user data:', error);
+      setError('Error fetching user data. Please try again later.');
     }
   };
 
@@ -70,28 +77,29 @@ const Profile = () => {
 
       alert('Balance updated successfully');
       setBalanceUpdate(''); // Clear the input field
-      await fetchBalance(); // Fetch the latest balance from the server
+      await fetchUserData(); // Fetch the latest user data from the server
     } catch (error) {
       console.error('Error updating balance:', error);
       setError('Error updating balance. Please try again later.');
     }
   };
 
-  // Fetch the balance on component mount
   useEffect(() => {
-    fetchBalance();
+    fetchUserData();
   }, []);
 
   return (
     <div className="profile-container">
-      <h2>Profile</h2>
+      <h2 className="profile-heading">Profile</h2>
       {error && <p className="error-message">{error}</p>}
       <div className="profile-details">
-        <h3>Your Balance</h3>
-        <p>${balance.toFixed(2)}</p>
+        
+        <p><strong>Name:</strong> {userData.name}</p>
+        <p><strong>Email:</strong> {userData.email}</p>
+        <p><strong>Your Balance:</strong> ${userData.balance.toFixed(2)}</p>
       </div>
       <form onSubmit={updateBalance} className="balance-form">
-        <label>
+        <label className="balance-label">
           Update Balance:
           <input
             type="number"
@@ -99,9 +107,10 @@ const Profile = () => {
             value={balanceUpdate}
             onChange={(e) => setBalanceUpdate(e.target.value)}
             required
+            className="balance-input"
           />
         </label>
-        <button type="submit">Update Balance</button>
+        <button type="submit" className="balance-button">Update Balance</button>
       </form>
     </div>
   );

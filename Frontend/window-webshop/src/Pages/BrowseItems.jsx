@@ -14,14 +14,14 @@ function BrowseItems() {
     async function fetchItems() {
       try {
         const response = await fetch(`/api/OrderItem?type=${selectedType}`);
-
+    
         if (!response.ok) {
           throw new Error(`Failed to fetch items: ${response.status}`);
         }
-
+    
         const data = await response.json();
         console.log('Fetched data:', data);
-
+    
         if (data && Array.isArray(data.$values)) {
           setOrderItems(data.$values);
         } else {
@@ -34,6 +34,7 @@ function BrowseItems() {
         setLoading(false);
       }
     }
+    
 
     fetchItems();
   }, [selectedType]);
@@ -47,11 +48,11 @@ function BrowseItems() {
   }
 
   const filteredItems = Array.isArray(orderItems)
-    ? orderItems.filter(item => item.type.toLowerCase() === selectedType)
+    ? orderItems.filter(item => item.type.toLowerCase() === selectedType.toLowerCase())
     : [];
 
-  const handleCardClick = (itemType, itemId) => {
-    navigate(`/item/${itemType}/${itemId}`);
+  const handleCardClick = (itemId) => {
+    navigate(`/item/${itemId}`); // Navigate to /item/${itemId}
   };
 
   const renderCards = (items) => {
@@ -60,7 +61,7 @@ function BrowseItems() {
     }
 
     return items.map((item) => (
-      <div key={item.id} className={`card-wrapper ${selectedType}-card`} onClick={() => handleCardClick(item.type, item.id)}>
+      <div key={item.id} className={`card-wrapper ${selectedType}-card`} onClick={() => handleCardClick(item.id)}>
         <OrderItemCard item={item} />
       </div>
     ));

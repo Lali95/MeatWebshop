@@ -39,7 +39,7 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: ':itemType/:itemId',
+        path: 'item/:itemId', // Adjusted to only itemId
         element: <ItemDetails />,
       },
       {
