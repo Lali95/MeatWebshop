@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import OrderItemCard from '../Components/OrderItemCard'; // Assuming a unified card component
+import { useNavigate } from 'react-router-dom';
+import OrderItemCard from '../Components/OrderItemCard';
 import '../Css/BrowseItems.css';
 
 function BrowseItems() {
@@ -7,6 +8,7 @@ function BrowseItems() {
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState('sausage');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchItems() {
@@ -20,7 +22,6 @@ function BrowseItems() {
         const data = await response.json();
         console.log('Fetched data:', data);
 
-        // Check if data has the $values property and extract the array
         if (data && Array.isArray(data.$values)) {
           setOrderItems(data.$values);
         } else {
@@ -45,19 +46,21 @@ function BrowseItems() {
     return <div>Error: {error}</div>;
   }
 
-  // Filter items based on selectedType
   const filteredItems = Array.isArray(orderItems)
     ? orderItems.filter(item => item.type.toLowerCase() === selectedType)
     : [];
 
-  // Render cards based on selectedType
+  const handleCardClick = (itemType, itemId) => {
+    navigate(`/item/${itemType}/${itemId}`);
+  };
+
   const renderCards = (items) => {
     if (!Array.isArray(items)) {
       return null;
     }
 
     return items.map((item) => (
-      <div key={item.id} className={`card-wrapper ${selectedType}-card`}>
+      <div key={item.id} className={`card-wrapper ${selectedType}-card`} onClick={() => handleCardClick(item.type, item.id)}>
         <OrderItemCard item={item} />
       </div>
     ));
