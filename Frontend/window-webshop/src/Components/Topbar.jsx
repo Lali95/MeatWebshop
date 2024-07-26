@@ -1,7 +1,6 @@
-// src/Components/Topbar.jsx
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Navbar, Nav, Form, FormControl, Button, ListGroup } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import '../Css/Topbar.css';
 import logo from '../assets/logo.png';
@@ -15,15 +14,22 @@ const Topbar = () => {
 
   const searchFormRef = useRef(null);
   const suggestionsDropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (searchTerm.length > 2) {
+    if (searchTerm.length >= 3) { // Adjusted to start fetching from 3 characters
       async function fetchSuggestions() {
         try {
-          const response = await fetch(`/api/search?query=${searchTerm}`);
-          const data = await response.json();
-          setSuggestions(data);
-          setShowSuggestions(true);
+          const response = await fetch(`/api/OrderItem?type=${searchTerm}`);
+          if (response.ok) {
+            const data = await response.json();
+            // Handle cases where data might be wrapped in an object
+            const suggestionsArray = Array.isArray(data) ? data : data.$values || [];
+            setSuggestions(suggestionsArray);
+            setShowSuggestions(true);
+          } else {
+            console.error('Failed to fetch suggestions');
+          }
         } catch (error) {
           console.error('Error fetching suggestions:', error);
         }
@@ -40,7 +46,8 @@ const Topbar = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleSuggestionClick = () => {
+  const handleSuggestionClick = (id) => {
+    navigate(`/item/${id}`); // Navigate to the item's detail page
     setShowSuggestions(false);
     setSuggestions([]);
   };
@@ -95,12 +102,10 @@ const Topbar = () => {
         </Button>
         {showSuggestions && (
           <ListGroup ref={suggestionsDropdownRef} className="suggestions-dropdown">
-            {suggestions.map((suggestion) => (
+            {Array.isArray(suggestions) && suggestions.map((suggestion) => (
               <ListGroup.Item
                 key={suggestion.id}
-                as={Link}
-                to={`/${suggestion.type}/${suggestion.id}`}
-                onClick={handleSuggestionClick} // Close suggestions on click
+                onClick={() => handleSuggestionClick(suggestion.id)} // Pass item ID to navigate
               >
                 {suggestion.name}
               </ListGroup.Item>

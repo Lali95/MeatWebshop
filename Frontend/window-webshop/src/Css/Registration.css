@@ -1,5 +1,5 @@
-/* Profile Container */
-.profile-container {
+/* Registration Container */
+.registration-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,31 +14,23 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
 }
 
-/* Heading for the profile page */
-.profile-heading {
+/* Heading for the registration page */
+.registration-heading {
   color: #fff; /* Light color for contrast on dark background */
   margin-bottom: 15px; /* Reduced margin for compactness */
-  font-size: 1.5rem; /* Consistent with registration form */
+  font-size: 1.5rem; /* Consistent with other headings */
   text-align: center; /* Center the heading */
 }
 
-/* Text Paragraphs */
-.profile-container p {
-  font-size: 1rem; /* Consistent font size */
-  margin: 10px 0; /* Compact margin */
-  color: #ccc; /* Light grey for text color */
-}
-
-/* Balance Form */
-.balance-form {
+/* Registration Form */
+.registration-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%; /* Full width of the container */
 }
 
-/* Balance Label */
-.balance-label {
+/* Registration Label */
+.registration-label {
   margin-bottom: 8px; /* Compact margin */
   color: #fff; /* Light color for contrast */
   font-weight: bold; /* Bold labels */
@@ -46,8 +38,8 @@
   width: 100%; /* Full width */
 }
 
-/* Balance Input */
-.balance-input {
+/* Registration Input */
+.registration-input {
   width: 100%; /* Full width */
   max-width: 300px; /* Consistent max-width */
   padding: 10px; /* Padding for input fields */
@@ -60,8 +52,8 @@
   color: #fff; /* Light text color */
 }
 
-/* Balance Button */
-.balance-button {
+/* Registration Button */
+.registration-button {
   padding: 10px 20px; /* Consistent padding */
   background-color: #007bff; /* Bright color for contrast */
   color: #fff; /* Light text color */
@@ -72,12 +64,12 @@
   font-size: 1rem; /* Consistent font size */
 }
 
-.balance-button:hover {
+.registration-button:hover {
   background-color: #0056b3; /* Darker shade on hover */
 }
 
 /* Error Message */
-.error-message {
+.error-text {
   color: #d9534f; /* Bright red for error messages */
   margin-top: 10px; /* Adjust margin for compact form */
   font-size: 0.875rem; /* Smaller font size for error messages */

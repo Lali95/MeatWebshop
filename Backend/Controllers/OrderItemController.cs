@@ -26,11 +26,15 @@ namespace Backend.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(type))
+                IQueryable<OrderItem> query = _context.OrderItems;
+
+                if (!string.IsNullOrEmpty(type))
                 {
-                    return await _context.OrderItems.ToListAsync();
+                    query = query.Where(oi => oi.Type == type);
                 }
-                return await _context.OrderItems.Where(oi => oi.Type == type).ToListAsync();
+
+                var orderItems = await query.ToListAsync();
+                return Ok(orderItems);
             }
             catch (Exception ex)
             {
@@ -39,8 +43,6 @@ namespace Backend.Controllers
                 return BadRequest("An error occurred while processing the request.");
             }
         }
-
-
 
         // GET: api/OrderItem/5
         [Authorize(Roles = "User")]
