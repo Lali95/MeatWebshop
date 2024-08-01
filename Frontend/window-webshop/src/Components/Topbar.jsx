@@ -73,19 +73,16 @@ const Topbar = () => {
 
   return (
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand className="company-name">
+      <Navbar.Brand className="company-name" onClick={() => navigate('/')}>
         <img src={logo} alt="Company Logo" className="logo" />
         Sülysápi Húsmester
       </Navbar.Brand>
       <Nav className="mr-auto">
-        <Nav.Link as={Link} to="/" className="btn btn-primary m-2">
-          Home
-        </Nav.Link>
         <Nav.Link as={Link} to="/about" className="btn btn-primary m-2">
-          About Us
+          About
         </Nav.Link>
         <Nav.Link as={Link} to="/browse" className="btn btn-primary m-2">
-          Browse Products
+          Browse
         </Nav.Link>
       </Nav>
       <Form ref={searchFormRef} className="d-flex search-form">
