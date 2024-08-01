@@ -68,6 +68,16 @@ namespace Backend.Controllers
 
             return CreatedAtAction(nameof(GetOrderItem), new { id = orderItem.Id }, orderItem);
         }
+        
+        [Authorize(Roles = "Admin")]
+        [HttpPost("add")]
+        public async Task<ActionResult<OrderItem>> AddOrderItem(OrderItem orderItem)
+        {
+            _context.OrderItems.Add(orderItem);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetOrderItem), new { id = orderItem.Id }, orderItem);
+        }
 
         // PUT: api/OrderItem/5
         [HttpPut("{id}")]

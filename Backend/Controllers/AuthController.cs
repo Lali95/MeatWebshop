@@ -3,6 +3,7 @@ using Backend.Model;
 using Backend.Repository;
 using Backend.Services.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -15,13 +16,20 @@ namespace Backend.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AuthController> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AuthController(IAuthService authService, IConfiguration configuration, IUserRepository userRepository, ILogger<AuthController> logger)
+        public AuthController(
+            IAuthService authService, 
+            IConfiguration configuration, 
+            IUserRepository userRepository, 
+            ILogger<AuthController> logger, 
+            UserManager<ApplicationUser> userManager)
         {
             _authService = authService;
             _configuration = configuration;
             _userRepository = userRepository;
             _logger = logger;
+            _userManager = userManager;
         }
 
         [HttpPost("Register")]
@@ -59,12 +67,22 @@ namespace Backend.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(new AuthResponse(result.Email, result.UserName, result.Token));
+            var user = await _userManager.FindByEmailAsync(result.Email);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var role = roles.FirstOrDefault() ?? "User"; // Default to "User" if no role found
+
+            return Ok(new AuthResponse(result.Email, result.UserName, result.Token, role));
         }
 
-        [Authorize(Roles = "User")]
+
+       
         [HttpGet("GetUserByEmail/{userEmail}")]
-        public async Task<ActionResult<ApplicationUser>> GetUserByEmail(string userEmail)
+        public async Task<ActionResult<AuthResponse>> GetUserByEmail(string userEmail)
         {
             try
             {
@@ -74,13 +92,25 @@ namespace Backend.Controllers
                     return NotFound("No user found in database");
                 }
 
-                return Ok(user);
+                var roles = await _userManager.GetRolesAsync(user);
+                var role = roles.FirstOrDefault() ?? "User"; // Default to "User" if no role found
+
+                var authResponse = new AuthResponse(
+                    user.Email,
+                    user.UserName,
+                    string.Empty, // Token is not needed for this response
+                    role
+                );
+
+                return Ok(authResponse);
             }
             catch (Exception e)
             {
                 return BadRequest("Error with finding user by email");
             }
         }
+
+
 
         [HttpPatch("UpBalance")]
         public async Task<IActionResult> UpBalanceAsync([FromBody] UpBalanceRequest request)
