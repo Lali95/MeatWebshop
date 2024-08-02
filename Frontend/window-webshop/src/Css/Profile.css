@@ -89,3 +89,53 @@
   font-size: 0.875rem;
   text-align: center;
 }
+
+/* Admin Section */
+.admin-section {
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* Add Item Form */
+.add-item-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.add-item-form label {
+  margin-bottom: 8px;
+  color: #fff; /* White color for labels */
+  font-weight: bold;
+  text-align: left;
+  width: 100%;
+}
+
+.add-item-form input {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: #222;
+  color: #fff; /* White text color */
+}
+
+.add-item-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+.add-item-button:hover {
+  background-color: #218838;
+}
