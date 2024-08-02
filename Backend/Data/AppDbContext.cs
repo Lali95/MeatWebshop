@@ -24,10 +24,11 @@ namespace Backend.Data
                 entity.HasKey(o => o.Id);
                 entity.Property(o => o.OrderSum).HasColumnType("decimal(18,2)");
 
-                entity.HasMany(o => o.OrderItems)
-                    .WithOne(oi => oi.Order)
-                    .HasForeignKey(oi => oi.OrderId)
-                    .OnDelete(DeleteBehavior.Restrict); // Specify OnDelete behavior
+                // Since OrderItem no longer has a foreign key to Order, this configuration is removed
+                // entity.HasMany(o => o.OrderItems)
+                //     .WithOne() // No navigation property in OrderItem
+                //     .HasForeignKey(oi => oi.OrderId)
+                //     .OnDelete(DeleteBehavior.Restrict); // Specify OnDelete behavior
             });
 
             // Configure OrderItem entity
@@ -38,6 +39,8 @@ namespace Backend.Data
                 entity.Property(oi => oi.Type).IsRequired().HasMaxLength(50);
                 entity.Property(oi => oi.Price).IsRequired().HasColumnType("decimal(18,2)");
                 entity.Property(oi => oi.Quantity).IsRequired();
+                
+                // No need to configure a foreign key relationship with Order
             });
         }
     }
