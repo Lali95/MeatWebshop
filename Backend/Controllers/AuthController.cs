@@ -76,8 +76,16 @@ namespace Backend.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             var role = roles.FirstOrDefault() ?? "User"; // Default to "User" if no role found
 
-            return Ok(new AuthResponse(result.Email, result.UserName, result.Token, role));
+            // Return the AuthResponse with Balance and Token
+            return Ok(new AuthResponse(
+                user.Email,
+                user.UserName,
+                user.Balance, // Ensure Balance is decimal
+                result.Token,
+                role
+            ));
         }
+
 
 
        
@@ -93,12 +101,15 @@ namespace Backend.Controllers
                 }
 
                 var roles = await _userManager.GetRolesAsync(user);
-                var role = roles.FirstOrDefault() ?? "User"; // Default to "User" if no role found
+                var role = roles.FirstOrDefault() ?? "User";
 
+                // Assuming `result.Token` is not needed here, just the user balance
+                // Use a placeholder token if necessary or leave it out of this response
                 var authResponse = new AuthResponse(
                     user.Email,
                     user.UserName,
-                    string.Empty, // Token is not needed for this response
+                    user.Balance, // Ensure Balance is decimal
+                    string.Empty, // Or provide a token if available
                     role
                 );
 
@@ -112,10 +123,11 @@ namespace Backend.Controllers
 
 
 
+
+
         [HttpPatch("UpBalance")]
         public async Task<IActionResult> UpBalanceAsync([FromBody] UpBalanceRequest request)
         {
-            Console.WriteLine(request.Email);
             var success = await _userRepository.UpdateBalanceAsync(request.Email, request.Balance);
 
             if (success)
@@ -127,6 +139,7 @@ namespace Backend.Controllers
                 return BadRequest(new { message = "Failed to update balance" });
             }
         }
+
 
 
         [HttpDelete("DeleteTestUser")]
