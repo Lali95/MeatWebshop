@@ -45,7 +45,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/OrderItem/5
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User, Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderItem>> GetOrderItem(int id)
         {
