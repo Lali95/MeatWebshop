@@ -23,9 +23,10 @@ namespace Backend.Controllers
         [HttpGet("{orderId}/items")]
         public async Task<ActionResult<List<OrderItem>>> GetOrderItems(int orderId)
         {
+            // Adjusting the query since OrderId is removed
             var orderItems = await _context.OrderItems
-                .Where(oi => oi.OrderId == orderId)
-                .ToListAsync();
+                .AsQueryable() // Explicitly cast to IQueryable
+                .ToListAsync(); // No need to filter by OrderId
 
             return orderItems;
         }
@@ -36,15 +37,12 @@ namespace Backend.Controllers
         {
             try
             {
+                // Check if order exists (if needed)
                 var order = await _context.Orders.FindAsync(orderId);
-
                 if (order == null)
                 {
                     return NotFound();
                 }
-
-                // Associate the order item with the order
-                orderItem.OrderId = orderId;
 
                 // Add the order item to the context
                 _context.OrderItems.Add(orderItem);
@@ -66,9 +64,9 @@ namespace Backend.Controllers
         [HttpPut("{orderId}/items/{itemId}")]
         public async Task<IActionResult> UpdateOrderItem(int orderId, int itemId, OrderItem orderItem)
         {
-            if (itemId != orderItem.Id || orderId != orderItem.OrderId)
+            if (itemId != orderItem.Id)
             {
-                return BadRequest("Item ID or Order ID mismatch");
+                return BadRequest("Item ID mismatch");
             }
 
             _context.Entry(orderItem).State = EntityState.Modified;
@@ -97,7 +95,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> DeleteOrderItem(int orderId, int itemId)
         {
             var orderItem = await _context.OrderItems.FindAsync(itemId);
-            if (orderItem == null || orderItem.OrderId != orderId)
+            if (orderItem == null)
             {
                 return NotFound();
             }
