@@ -1,4 +1,3 @@
-// src/main.jsx
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -11,7 +10,8 @@ import Login from './Pages/Login.jsx';
 import ItemDetails from './Pages/ItemDetails.jsx';
 import Cart from './Pages/Cart.jsx';
 import Profile from './Pages/Profile.jsx';
-import { AuthProvider } from './Contexts/AuthContext.jsx';  // Ensure correct path and extension
+import { AuthProvider } from './Contexts/AuthContext.jsx'; 
+import './i18n'; 
 
 const router = createBrowserRouter([
   {
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: 'item/:itemId', // Adjusted to only itemId
+        path: 'item/:itemId', 
         element: <ItemDetails />,
       },
       {

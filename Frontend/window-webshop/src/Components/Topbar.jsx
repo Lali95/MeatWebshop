@@ -2,11 +2,14 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Navbar, Nav, Form, FormControl, Button, ListGroup } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher'; // Import the LanguageSwitcher component
+import { AuthContext } from '../Contexts/AuthContext.jsx';  // Ensure correct path and extension
 import '../Css/Topbar.css';
 import logo from '../assets/logo.png';
-import { AuthContext } from '../Contexts/AuthContext.jsx';  // Ensure correct path and extension
 
 const Topbar = () => {
+  const { t } = useTranslation();
   const { isAuthenticated, logout } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -17,13 +20,12 @@ const Topbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (searchTerm.length >= 3) { // Adjusted to start fetching from 3 characters
+    if (searchTerm.length >= 3) {
       async function fetchSuggestions() {
         try {
           const response = await fetch(`/api/OrderItem?type=${searchTerm}`);
           if (response.ok) {
             const data = await response.json();
-            // Handle cases where data might be wrapped in an object
             const suggestionsArray = Array.isArray(data) ? data : data.$values || [];
             setSuggestions(suggestionsArray);
             setShowSuggestions(true);
@@ -47,7 +49,7 @@ const Topbar = () => {
   };
 
   const handleSuggestionClick = (id) => {
-    navigate(`/item/${id}`); // Navigate to the item's detail page
+    navigate(`/item/${id}`);
     setShowSuggestions(false);
     setSuggestions([]);
   };
@@ -74,21 +76,21 @@ const Topbar = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand className="company-name" onClick={() => navigate('/')}>
-        <img src={logo} alt="Company Logo" className="logo" />
-        Sülysápi Húsmester
+        <img src={logo} alt={t('companyLogoAlt')} className="logo" />
+        {t('companyName')}
       </Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link as={Link} to="/about" className="btn btn-primary m-2">
-          About
+          {t('about')}
         </Nav.Link>
         <Nav.Link as={Link} to="/browse" className="btn btn-primary m-2">
-          Browse
+          {t('browse')}
         </Nav.Link>
       </Nav>
       <Form ref={searchFormRef} className="d-flex search-form">
         <FormControl
           type="search"
-          placeholder="Search"
+          placeholder={t('searchPlaceholder')}
           className="mr-2 search-input"
           aria-label="Search"
           value={searchTerm}
@@ -99,36 +101,38 @@ const Topbar = () => {
         </Button>
         {showSuggestions && (
           <ListGroup ref={suggestionsDropdownRef} className="suggestions-dropdown">
-            {Array.isArray(suggestions) && suggestions.map((suggestion) => (
-              <ListGroup.Item
-                key={suggestion.id}
-                onClick={() => handleSuggestionClick(suggestion.id)} // Pass item ID to navigate
-              >
-                {suggestion.name}
-              </ListGroup.Item>
-            ))}
+            {Array.isArray(suggestions) &&
+              suggestions.map((suggestion) => (
+                <ListGroup.Item
+                  key={suggestion.id}
+                  onClick={() => handleSuggestionClick(suggestion.id)}
+                >
+                  {suggestion.name}
+                </ListGroup.Item>
+              ))}
           </ListGroup>
         )}
       </Form>
+      <LanguageSwitcher /> {/* Add the LanguageSwitcher component */}
       {isAuthenticated ? (
         <>
           <Nav.Link as={Link} to="/profile" className="btn btn-primary m-2">
-            Profile
+            {t('profile')}
           </Nav.Link>
           <Nav.Link as={Link} to="/cart" className="btn btn-primary m-2">
-            Cart
+            {t('cart')}
           </Nav.Link>
           <Button onClick={logout} className="btn btn-danger m-2">
-            Logout
+            {t('logout')}
           </Button>
         </>
       ) : (
         <>
           <Nav.Link as={Link} to="/register" className="btn btn-primary m-2">
-            Register
+            {t('register')}
           </Nav.Link>
           <Nav.Link as={Link} to="/login" className="btn btn-primary m-2">
-            Login
+            {t('login')}
           </Nav.Link>
         </>
       )}

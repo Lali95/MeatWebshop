@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../Css/Profile.css'; // Ensure this path is correct
 
+
 const Profile = () => {
+  const { t } = useTranslation(); // Initialize the translation function
   const [userData, setUserData] = useState({
     balance: 0,
     name: '',
@@ -165,20 +168,20 @@ const Profile = () => {
   return (
     <div className="profile-container">
       {loading ? (
-        <p>Loading...</p>
+        <p>{t('loading')}</p> // Replace with the translation key
       ) : (
         <>
-          <h2 className="profile-heading">Profile</h2>
+          <h2 className="profile-heading">{t('profileHeading')}</h2>
           {error && <p className="error-message">{error}</p>}
           <div className="profile-details">
-            <p><strong>Name:</strong> {userData.name}</p>
-            <p><strong>Email:</strong> {userData.email}</p>
-            <p><strong>Your Balance:</strong> ${userData.balance.toFixed(2)}</p>
-            <p><strong>Role:</strong> {userData.role}</p>
+            <p><strong>{t('name')}:</strong> {userData.name}</p>
+            <p><strong>{t('email')}:</strong> {userData.email}</p>
+            <p><strong>{t('yourBalance')}:</strong> ${userData.balance.toFixed(2)}</p>
+            <p><strong>{t('role')}:</strong> {userData.role}</p>
           </div>
           <form onSubmit={updateBalance} className="balance-form">
             <label className="balance-label">
-              Update Balance:
+              {t('updateBalance')}:
               <input
                 type="number"
                 step="1"
@@ -188,15 +191,15 @@ const Profile = () => {
                 className="balance-input"
               />
             </label>
-            <button type="submit" className="balance-button">Update Balance</button>
+            <button type="submit" className="balance-button">{t('updateBalanceButton')}</button>
           </form>
 
           {userData.role === 'Admin' && (
             <div className="admin-section">
-              <h3>Add Item to Stock</h3>
+              <h3>{t('addItemToStock')}</h3>
               <form onSubmit={addItem} className="add-item-form">
                 <label>
-                  Name:
+                  {t('itemName')}:
                   <input
                     type="text"
                     value={newItem.name}
@@ -205,7 +208,7 @@ const Profile = () => {
                   />
                 </label>
                 <label>
-                  Price:
+                  {t('itemPrice')}:
                   <input
                     type="number"
                     step="0.01"
@@ -215,7 +218,7 @@ const Profile = () => {
                   />
                 </label>
                 <label>
-                  Quantity:
+                  {t('itemQuantity')}:
                   <input
                     type="number"
                     value={newItem.quantity}
@@ -224,7 +227,7 @@ const Profile = () => {
                   />
                 </label>
                 <label>
-                  Type:
+                  {t('itemType')}:
                   <input
                     type="text"
                     value={newItem.type}
@@ -232,13 +235,13 @@ const Profile = () => {
                     required
                   />
                 </label>
-                <button type="submit" className="add-item-button">Add Item</button>
+                <button type="submit" className="add-item-button">{t('addItemButton')}</button>
               </form>
 
-              <h3>Orders</h3>
+              <h3>{t('orders')}</h3>
               <ul>
                 {orders.map(order => (
-                  <li key={order.id}>Order ID: {order.id}, Details: {order.details}</li>
+                  <li key={order.id}>{t('orderId')}: {order.id}, {t('orderDetails')}: {order.details}</li>
                 ))}
               </ul>
             </div>
