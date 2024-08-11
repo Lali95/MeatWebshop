@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import '../Css/Registration.css'; 
 
 const Registration = () => {
+  const { t } = useTranslation();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,7 +46,7 @@ const Registration = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData.error || "Registration failed");
+        setError(errorData.error || t('registrationFailed'));
         return;
       }
 
@@ -56,7 +58,7 @@ const Registration = () => {
       navigate(`/login`);
     } catch (error) {
       console.error("Error during registration:", error);
-      setError("An unexpected error occurred. Please try again.");
+      setError(t('unexpectedError'));
     } finally {
       setLoading(false);
     }
@@ -64,72 +66,72 @@ const Registration = () => {
 
   return (
     <div className="registration-container">
-      <h4 className="registration-heading">Enter your data</h4>
+      <h4 className="registration-heading">{t('Enter your data')}</h4>
       <form className="registration-form" onSubmit={handleRegistration}>
         <label className="registration-label">
-          Username:
+          {t('username')}:
           <input
             className="registration-input"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            aria-label="Username"
+            aria-label={t('username')}
           />
         </label>
         <label className="registration-label">
-          Your email address:
+          {t('Email address')}:
           <input
             className="registration-input"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            aria-label="Email"
+            aria-label={t('email')}
           />
         </label>
         <label className="registration-label">
-          Your password:
+          {t('Password')}:
           <input
             className="registration-input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            aria-label="Password"
+            aria-label={t('password')}
           />
         </label>
         <label className="registration-label">
-          Confirm password:
+          {t('confirmPassword')}:
           <input
             className="registration-input"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            aria-label="Confirm Password"
+            aria-label={t('confirmPassword')}
           />
         </label>
         <label className="registration-label">
-          Date of birth:
+          {t('dateOfBirth')}:
           <input
             className="registration-input"
             type="date"
             value={birthdate}
             onChange={(e) => setBirthdate(e.target.value)}
             required
-            aria-label="Date of Birth"
+            aria-label={t('dateOfBirth')}
           />
         </label>
         <label className="registration-label">
-          Address:
+          {t('address')}:
           <input
             className="registration-input"
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             required
-            aria-label="Address"
+            aria-label={t('address')}
           />
         </label>
         {error && <p className="error-text">{error}</p>}
@@ -138,9 +140,9 @@ const Registration = () => {
           className="registration-button"
           disabled={loading} // Disable button while loading
         >
-          {loading ? "Registering..." : "Register"}
+          {loading ? t('registering') : t('register')}
         </button>
-        {!passwordMatch && <p className="error-text">Passwords do not match.</p>}
+        {!passwordMatch && <p className="error-text">{t('passwordsDoNotMatch')}</p>}
       </form>
     </div>
   );

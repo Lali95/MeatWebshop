@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import OrderItemCard from '../Components/OrderItemCard';
 import '../Css/BrowseItems.css';
 
+
 function BrowseItems() {
+  const { t } = useTranslation(); // Initialize the translation function
   const [orderItems, setOrderItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState('sausage');
@@ -30,21 +33,20 @@ function BrowseItems() {
         setLoading(false);
       } catch (error) {
         console.error('Error fetching items:', error.message);
-        setError('Failed to fetch items. Please try again later.');
+        setError(t('fetchError')); // Use translation key
         setLoading(false);
       }
     }
-    
 
     fetchItems();
-  }, [selectedType]);
+  }, [selectedType, t]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>{t('loading')}</div>; // Use translation key
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>{t('error')}: {error}</div>; // Use translation key
   }
 
   const filteredItems = Array.isArray(orderItems)
@@ -69,17 +71,17 @@ function BrowseItems() {
 
   return (
     <div className="browse-items">
-      <h1>Browse Items</h1>
+      <h1>{t('browseItems')}</h1>
       <div className="select">
-        <label htmlFor="itemType">Select product: </label>
+        <label htmlFor="itemType">{t('selectProduct')}: </label>
         <select
           id="itemType"
           value={selectedType}
           onChange={(e) => setSelectedType(e.target.value)}
         >
-          <option value="sausage">Sausage</option>
-          <option value="steak">Steak</option>
-          <option value="chicken thighs">Chicken</option>
+          <option value="sausage">{t('sausage')}</option>
+          <option value="steak">{t('steak')}</option>
+          <option value="chicken thighs">{t('chickenThighs')}</option>
           {/* Add other types as needed */}
         </select>
       </div>
@@ -91,3 +93,4 @@ function BrowseItems() {
 }
 
 export default BrowseItems;
+

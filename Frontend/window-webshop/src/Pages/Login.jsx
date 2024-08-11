@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../Contexts/AuthContext.jsx';
 import '../Css/Login.css'; 
 
 const Login = () => {
+  const { t } = useTranslation();
   const { login, isAuthenticated } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,15 +51,15 @@ const Login = () => {
     <div className="login-container">
       {isAuthenticated ? (
         <div>
-          <h3 className="login-heading">You are already logged in.</h3>
+          <h3 className="login-heading">{t('alreadyLoggedIn')}</h3>
           <Profile />
         </div>
       ) : (
         <div>
-          <h3 className="login-heading">Log in</h3>
+          <h3 className="login-heading">{t('login')}</h3>
           <form onSubmit={handleLogin} className="login-form">
             <label className="login-label">
-              Email:
+              {t('email')}:
               <input
                 type="email"
                 value={email}
@@ -67,7 +69,7 @@ const Login = () => {
               />
             </label>
             <label className="login-label">
-              Password:
+              {t('password')}:
               <input
                 type="password"
                 value={password}
@@ -76,7 +78,7 @@ const Login = () => {
                 className="login-input"
               />
             </label>
-            <button type="submit" className="login-button">Login</button>
+            <button type="submit" className="login-button">{t('login')}</button>
           </form>
         </div>
       )}

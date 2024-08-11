@@ -1,9 +1,12 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import '../Css/LandingPage.css'; // Ensure this path is correct
 import Topbar from '../Components/Topbar';
 
 const LandingPage = () => {
+  const { t } = useTranslation();
+
   const handleGoBack = () => {
     window.history.back();
   };
@@ -15,7 +18,7 @@ const LandingPage = () => {
         <Outlet />
       </div>
       <button className="back-button btn btn-secondary m-2" onClick={handleGoBack}>
-        Back
+        {t('back')}
       </button>
     </div>
   );

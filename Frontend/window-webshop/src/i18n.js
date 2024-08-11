@@ -75,7 +75,7 @@ const resources = {
       "chicken": "Csirke",
       "shoppingCart": "Bevásárlókosár",
       "cartEmpty": "Az Ön kosara üres",
-      "pieces": "darabok",
+      "pieces": "darab",
       "price": "ár",
       "removeAll": "Összes eltávolítása",
       "sum": "Összeg",
