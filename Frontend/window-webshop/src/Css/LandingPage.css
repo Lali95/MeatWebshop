@@ -1,66 +1,158 @@
+/* General box-sizing rule for all elements */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Ensure that the background image is applied to the body element */
+body {
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  width: 100%; /* Ensure body takes full width */
+  height: 100%; /* Ensure body takes full height */
+}
+
+/* Container for the entire layout */
 .nav-container {
-    padding: 20px;
-    background-color: #f8f9fa; /* Bootstrap's light background color */
-  }
-  
-  .navbar .nav-link {
-    margin: 5px;
-  }
-  
-  /* Button styling */
-  .navbar .nav-link.btn {
-    color: white;
-    padding: 10px 20px; /* Adjust padding as needed */
-    border-radius: 5px; /* Add border radius for rounded corners */
-  }
-  
-  .navbar .nav-link.btn-primary {
-    background-color: #007bff; /* Bootstrap's primary color */
-  }
-  
-  .navbar .nav-link.btn-primary:hover {
-    background-color: #0056b3; /* Darker shade for hover effect */
-  }
-  
-  .search-form {
-    flex-grow: 1;
-  }
-  
-  .search-input {
-    width:100%;
-  }
-  
-  .back-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-  }
-  
-  .content-container {
-    padding: 20px;
-  }
-  
-  /* Add this CSS to your LandingPage.css file */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0; /* Ensure no margin is causing shifts */
+  padding: 0; /* Remove padding to ensure full width */
+  position: relative;
+  min-height: 100vh; /* Ensure it covers the full viewport height */
+  width: 100%; /* Ensure it takes the full width of the viewport */
+  background-image: url('../assets/background.png'); /* Path to your background image */
+  background-size: cover; /* Ensure background covers the container */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Prevent repeating */
+  background-color: rgba(0, 0, 0, 0.6); /* Darker semi-transparent background */
+}
+
+/* Styling for the company name */
+.company-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #5d5c5c; /* Light color for better contrast */
+  display: flex;
+  align-items: center;
+  margin: 0; /* Ensure no margin is causing shifts */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Styling for the logo */
+.logo {
+  width: 100px; /* Fixed size for the logo */
+  height: auto;
+  margin-right: 10px; /* Space between logo and company name */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Search form styling */
 .search-form {
-    display: flex;
-    align-items: center; /* Align items vertically */
-    border: 1px solid #ced4da; /* Match input border */
-    border-radius: 5px; /* Match input border radius */
-    padding: 5px; /* Match input padding */
-  }
-  
-  .search-input {
-    flex-grow: 1; /* Expand input to fill available space */
-    border: none; /* Remove input border */
-    outline: none; /* Remove input focus outline */
-  }
-  
-  .search-input::placeholder {
-    color: #6c757d; /* Match input placeholder color */
-  }
-  
-  .search-button {
-    border: none; /* Remove button border */
-    background-color: transparent; /* Make button background transparent */
-  }
-  
+  display: flex;
+  align-items: center; /* Align items vertically */
+  margin: 0; /* Ensure no margin is causing shifts */
+  padding: 0; /* Remove padding to ensure full width */
+  width: 100%; /* Ensure it takes the full width of the container */
+}
+
+/* Styling for the search input */
+.search-input {
+  flex-grow: 1; /* Expand input to fill available space */
+  padding: 10px; /* Add padding to improve comfort */
+  border: none; /* Remove input border */
+  outline: none; /* Remove default outline */
+  background-color: #ffffff; /* Background color for input field */
+  color: #000000; /* Light text color for contrast */
+}
+
+/* Placeholder styling for search input */
+.search-input::placeholder {
+  color: #6c757d; /* Match input placeholder color */
+}
+
+/* Styling for the search button */
+.search-button {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px; /* Increased padding for better clickability */
+  background-color: #5d5c5c; /* Darker button background */
+  color: #fff; /* Light text color */
+  border: none; /* Remove border */
+  border-radius: 20px; /* Rounded corners to match input field */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #555; /* Slightly lighter on hover */
+}
+
+/* Dropdown suggestions styling */
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #222; /* Darker background to match dark theme */
+  border: 1px solid #444; /* Darker border for better blending */
+  border-radius: 10px; /* Rounded corners for a modern look */
+  max-height: 200px;
+  overflow-y: auto;
+  box-sizing: border-box; /* Include padding and border in height calculation */
+}
+
+/* Styling for dropdown items */
+.suggestions-dropdown .list-group-item {
+  cursor: pointer;
+  padding: 10px; /* Add padding for clickable area */
+  color: #fff; /* Light text color */
+  background-color: #333; /* Darker background for dropdown items */
+}
+
+/* Hover effect for dropdown items */
+.suggestions-dropdown .list-group-item:hover {
+  background-color: #444; /* Slightly lighter background on hover */
+}
+
+/* Additional navbar styling if needed */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* Ensure navbar takes full width */
+  padding: 0 20px; /* Add horizontal padding */
+  background-color: rgba(0, 0, 0, 0.6); /* Transparent black background */
+  color: #fff; /* Light text color for contrast */
+}
+
+/* Navbar link styling */
+.navbar .nav-link {
+  margin: 5px;
+}
+
+/* Button styling */
+.navbar .nav-link.btn {
+  color: white;
+  padding: 10px 20px; /* Adjust padding as needed */
+  border-radius: 5px; /* Add border radius for rounded corners */
+}
+
+/* Primary button styling */
+.navbar .nav-link.btn-primary {
+  background-color: #007bff; /* Bootstrap's primary color */
+}
+
+.navbar .nav-link.btn-primary:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+
+/* Back button styling */
+.back-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}

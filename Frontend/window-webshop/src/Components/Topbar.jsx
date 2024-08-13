@@ -1,26 +1,37 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Navbar, Nav, Form, FormControl, Button, ListGroup } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher'; // Import the LanguageSwitcher component
+import { AuthContext } from '../Contexts/AuthContext.jsx';  // Ensure correct path and extension
 import '../Css/Topbar.css';
 import logo from '../assets/logo.png';
 
 const Topbar = () => {
+  const { t } = useTranslation();
+  const { isAuthenticated, logout } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const searchFormRef = useRef(null);
   const suggestionsDropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (searchTerm.length > 2) {
+    if (searchTerm.length >= 3) {
       async function fetchSuggestions() {
         try {
-          const response = await fetch(`/api/search?query=${searchTerm}`);
-          const data = await response.json();
-          setSuggestions(data);
-          setShowSuggestions(true);
+          const response = await fetch(`/api/OrderItem?type=${searchTerm}`);
+          if (response.ok) {
+            const data = await response.json();
+            const suggestionsArray = Array.isArray(data) ? data : data.$values || [];
+            setSuggestions(suggestionsArray);
+            setShowSuggestions(true);
+          } else {
+            console.error('Failed to fetch suggestions');
+          }
         } catch (error) {
           console.error('Error fetching suggestions:', error);
         }
@@ -37,7 +48,8 @@ const Topbar = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleSuggestionClick = () => {
+  const handleSuggestionClick = (id) => {
+    navigate(`/item/${id}`);
     setShowSuggestions(false);
     setSuggestions([]);
   };
@@ -63,25 +75,22 @@ const Topbar = () => {
 
   return (
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand className="company-name">
-        <img src={logo} alt="Company Logo" className="logo" />
-        Sülysápi Húsmester
+      <Navbar.Brand className="company-name" onClick={() => navigate('/')}>
+        <img src={logo} alt={t('companyLogoAlt')} className="logo" />
+        {t('companyName')}
       </Navbar.Brand>
       <Nav className="mr-auto">
-        <Nav.Link as={Link} to="/" className="btn btn-primary m-2">
-          Home
-        </Nav.Link>
         <Nav.Link as={Link} to="/about" className="btn btn-primary m-2">
-          About Us
+          {t('about')}
         </Nav.Link>
         <Nav.Link as={Link} to="/browse" className="btn btn-primary m-2">
-          Browse Products
+          {t('browse')}
         </Nav.Link>
       </Nav>
       <Form ref={searchFormRef} className="d-flex search-form">
         <FormControl
           type="search"
-          placeholder="Search"
+          placeholder={t('searchPlaceholder')}
           className="mr-2 search-input"
           aria-label="Search"
           value={searchTerm}
@@ -92,31 +101,41 @@ const Topbar = () => {
         </Button>
         {showSuggestions && (
           <ListGroup ref={suggestionsDropdownRef} className="suggestions-dropdown">
-            {suggestions.map((suggestion) => (
-              <ListGroup.Item
-                key={suggestion.id}
-                as={Link}
-                to={`/${suggestion.type}/${suggestion.id}`}
-                onClick={handleSuggestionClick} // Close suggestions on click
-              >
-                {suggestion.name}
-              </ListGroup.Item>
-            ))}
+            {Array.isArray(suggestions) &&
+              suggestions.map((suggestion) => (
+                <ListGroup.Item
+                  key={suggestion.id}
+                  onClick={() => handleSuggestionClick(suggestion.id)}
+                >
+                  {suggestion.name}
+                </ListGroup.Item>
+              ))}
           </ListGroup>
         )}
       </Form>
-      <Nav.Link as={Link} to="/register" className="btn btn-primary m-2">
-        Register
-      </Nav.Link>
-      <Nav.Link as={Link} to="/profile" className="btn btn-primary m-2">
-        Profile
-      </Nav.Link>
-      <Nav.Link as={Link} to="/login" className="btn btn-primary m-2">
-        Login
-      </Nav.Link>
-      <Nav.Link as={Link} to="/cart" className="btn btn-primary m-2">
-          Cart
-        </Nav.Link>
+      <LanguageSwitcher /> {/* Add the LanguageSwitcher component */}
+      {isAuthenticated ? (
+        <>
+          <Nav.Link as={Link} to="/profile" className="btn btn-primary m-2">
+            {t('profile')}
+          </Nav.Link>
+          <Nav.Link as={Link} to="/cart" className="btn btn-primary m-2">
+            {t('cart')}
+          </Nav.Link>
+          <Button onClick={logout} className="btn btn-danger m-2">
+            {t('logout')}
+          </Button>
+        </>
+      ) : (
+        <>
+          <Nav.Link as={Link} to="/register" className="btn btn-primary m-2">
+            {t('register')}
+          </Nav.Link>
+          <Nav.Link as={Link} to="/login" className="btn btn-primary m-2">
+            {t('login')}
+          </Nav.Link>
+        </>
+      )}
     </Navbar>
   );
 };

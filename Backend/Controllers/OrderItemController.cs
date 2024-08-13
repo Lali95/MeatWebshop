@@ -26,11 +26,15 @@ namespace Backend.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(type))
+                IQueryable<OrderItem> query = _context.OrderItems;
+
+                if (!string.IsNullOrEmpty(type))
                 {
-                    return await _context.OrderItems.ToListAsync();
+                    query = query.Where(oi => oi.Type == type);
                 }
-                return await _context.OrderItems.Where(oi => oi.Type == type).ToListAsync();
+
+                var orderItems = await query.ToListAsync();
+                return Ok(orderItems);
             }
             catch (Exception ex)
             {
@@ -40,10 +44,8 @@ namespace Backend.Controllers
             }
         }
 
-
-
         // GET: api/OrderItem/5
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User, Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderItem>> GetOrderItem(int id)
         {
@@ -60,6 +62,16 @@ namespace Backend.Controllers
         // POST: api/OrderItem
         [HttpPost]
         public async Task<ActionResult<OrderItem>> PostOrderItem(OrderItem orderItem)
+        {
+            _context.OrderItems.Add(orderItem);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetOrderItem), new { id = orderItem.Id }, orderItem);
+        }
+        
+        [Authorize(Roles = "Admin")]
+        [HttpPost("add")]
+        public async Task<ActionResult<OrderItem>> AddOrderItem(OrderItem orderItem)
         {
             _context.OrderItems.Add(orderItem);
             await _context.SaveChangesAsync();
@@ -98,6 +110,7 @@ namespace Backend.Controllers
         }
 
         // DELETE: api/OrderItem/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrderItem(int id)
         {

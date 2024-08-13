@@ -190,68 +190,26 @@ async Task CreateAdminIfNotExists()
     }
 }
 
-async Task PopulateDatabase(WebApplication app)
+ static void PopulateDatabase(AppDbContext context)
 {
-    using var scope = app.Services.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    
-    // Ensure the database is created
-    await context.Database.EnsureCreatedAsync();
-
-    // Create an example order
-    var order = new Order
+    // Example code snippet; adjust as needed
+    var orders = new List<Order>
     {
-        // Initialize Order properties if needed
+        new Order { /* initialization */ },
+        // Other orders
     };
 
-    context.Orders.Add(order);
-    await context.SaveChangesAsync(); // Save to get OrderId populated
+    context.Orders.AddRange(orders);
 
-    // Create order items
+    // If you need to add OrderItems, ensure they do not reference OrderId directly
     var orderItems = new List<OrderItem>
     {
-        new OrderItem
-        {
-            Name = "Classic Sausage",
-            Price = 10.99m,
-            Quantity = 2,
-            Type = "sausage",
-            OrderId = order.Id  // Ensure this is set
-        },
-        new OrderItem
-        {
-            Name = "Ribeye Steak",
-            Price = 29.99m,
-            Quantity = 1,
-            Type = "steak",
-            OrderId = order.Id  // Ensure this is set
-        },
-        new OrderItem
-        {
-            Name = "Chicken Thighs",
-            Price = 12.99m,
-            Quantity = 3,
-            Type = "chicken thighs",
-            OrderId = order.Id  // Ensure this is set
-        },
-        new OrderItem
-        {
-            Name = "Spicy Sausage",
-            Price = 11.99m,
-            Quantity = 1,
-            Type = "sausage",
-            OrderId = order.Id  // Ensure this is set
-        },
-        new OrderItem
-        {
-            Name = "Filet Mignon",
-            Price = 35.99m,
-            Quantity = 1,
-            Type = "steak",
-            OrderId = order.Id  // Ensure this is set
-        }
+        new OrderItem { Name = "Item1", Price = 10.00m, Quantity = 1, Type = "Type1" },
+        // Other items
     };
 
     context.OrderItems.AddRange(orderItems);
-    await context.SaveChangesAsync();
+
+    context.SaveChanges();
 }
+

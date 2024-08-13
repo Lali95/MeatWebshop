@@ -1,23 +1,29 @@
 /* src/Css/BrowseItems.css */
 
+/* Container for browse items */
 .browse-items {
   padding: 20px;
-  background-color: #f7f7f7;
+  background-color: rgba(0, 0, 0, 0.9); /* Slightly transparent black background */
   font-family: 'Arial, sans-serif';
   display: flex;
   flex-direction: column;
   align-items: center; /* Center the grid container */
   overflow-y: auto; /* Allow vertical scrolling if content overflows */
   box-sizing: border-box; /* Include padding in width and height calculations */
+  border-radius: 8px; /* Rounded corners for a softer look */
+  /* Optional: Remove backdrop-filter if not required */
+  /* backdrop-filter: blur(10px); */ 
 }
 
+/* Heading styling */
 .browse-items h1 {
   text-align: center;
-  color: #333;
+  color: #fff; /* White text color */
   font-size: 2rem;
   margin-bottom: 20px;
 }
 
+/* Select element styling */
 .select {
   display: flex;
   justify-content: center;
@@ -27,14 +33,19 @@
 .select label {
   margin-right: 10px;
   font-size: 1rem;
-  color: #333;
+  color: #fff; /* White text color */
 }
 
 .select select {
   padding: 5px 10px;
   font-size: 1rem;
+  border-radius: 4px; /* Rounded corners */
+  border: 1px solid #ddd; /* Light border to blend with background */
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background for select */
+  color: #000; /* Black text color for readability */
 }
 
+/* Grid layout for item list */
 .item-list {
   display: grid;
   grid-template-columns: repeat(5, 1fr); /* 5 columns */
@@ -46,8 +57,9 @@
   overflow-x: hidden; /* Ensure no horizontal overflow */
 }
 
+/* Card wrapper styling */
 .card-wrapper {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.9); /* Semi-transparent background for cards */
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -61,16 +73,19 @@
   box-sizing: border-box; /* Include padding and border in width and height calculations */
 }
 
+/* Card link styling */
 .card-wrapper a {
   text-decoration: none;
   color: inherit;
 }
 
+/* Card hover effect */
 .card-wrapper:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* Card content styling */
 .card-content {
   display: flex;
   flex-direction: column;
@@ -79,6 +94,7 @@
   box-sizing: border-box; /* Include padding in height calculation */
 }
 
+/* Card image styling */
 .card-image {
   display: flex;
   justify-content: center; /* Center the image horizontally */
@@ -90,17 +106,19 @@
   height: auto; /* Maintain aspect ratio */
 }
 
+/* Card details styling */
 .card-details {
   padding: 15px;
   text-align: center; /* Center the text horizontally */
   display: flex;
   flex-direction: column;
   justify-content: center; /* Center the text vertically */
+  color: #fff; /* White text color */
 }
 
 .card-details h2 {
   font-size: 1.5rem;
-  color: #333;
+  color: #fff; /* White text color */
   margin: 10px 0; /* Margin to space out from other elements */
   overflow: hidden; /* Prevent overflow */
   text-overflow: ellipsis; /* Add ellipsis if text overflows */
@@ -109,7 +127,7 @@
 
 .card-details p {
   font-size: 1rem;
-  color: #666;
+  color: #ddd; /* Light grey text color for better contrast */
   margin-bottom: 5px;
   overflow: hidden; /* Prevent overflow */
   text-overflow: ellipsis; /* Add ellipsis if text overflows */

@@ -1,4 +1,3 @@
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -11,7 +10,8 @@ import Login from './Pages/Login.jsx';
 import ItemDetails from './Pages/ItemDetails.jsx';
 import Cart from './Pages/Cart.jsx';
 import Profile from './Pages/Profile.jsx';
-
+import { AuthProvider } from './Contexts/AuthContext.jsx'; 
+import './i18n'; 
 
 const router = createBrowserRouter([
   {
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <div>Welcome to the Landing Page</div>, 
+        element: <div>Welcome to the Landing Page</div>,
       },
       {
         path: 'about',
@@ -28,29 +28,28 @@ const router = createBrowserRouter([
       },
       {
         path: 'browse',
-        element: <BrowseItems/>,
+        element: <BrowseItems />,
       },
       {
         path: 'register',
-        element: <Registration/>,
+        element: <Registration />,
       },
       {
         path: 'login',
-        element: <Login/>,
+        element: <Login />,
       },
       {
-        path: ':itemType/:itemId',
-        element: <ItemDetails/>,
+        path: 'item/:itemId', 
+        element: <ItemDetails />,
       },
       {
         path: 'cart',
-        element: <Cart/>,
+        element: <Cart />,
       },
       {
         path: 'profile',
-        element: <Profile/>,
+        element: <Profile />,
       },
-     
     ],
   },
 ]);
@@ -58,5 +57,7 @@ const router = createBrowserRouter([
 const root = createRoot(document.getElementById('root'));
 
 root.render(
-  <RouterProvider router={router} />
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 );

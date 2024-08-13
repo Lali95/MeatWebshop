@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import images from '../assets/images'; // Import the images
 import '../Css/OrderItemCard.css';
 
 function OrderItemCard({ item }) {
+  const { t } = useTranslation();
+
   // Get the image URL based on the item's type
   const imageUrl = images[item.type.toLowerCase()] || images.meats; // Default to sausage image if type is not found
 
@@ -14,9 +17,9 @@ function OrderItemCard({ item }) {
       </div>
       <div className="order-item-card-details">
         <h3>{item.name}</h3>
-        <p>Price: ${item.price.toFixed(2)}</p>
-        <p>Quantity: {item.quantity}</p>
-        <p>Type: {item.type}</p>
+        <p>{t('price')}: ${item.price.toFixed(2)}</p>
+        <p>{t('quantity')}: {item.quantity}</p>
+        <p>{t('type')}: {item.type}</p>
       </div>
     </div>
   );

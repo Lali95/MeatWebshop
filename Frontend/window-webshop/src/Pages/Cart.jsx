@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import '../Css/Cart.css';
+import { useTranslation } from 'react-i18next';
+import '../Css/Cart.css'; // Ensure this path is correct
 
 const Cart = () => {
+  const { t } = useTranslation();
   const [cart, setCart] = useState([]);
   const [sum, setSum] = useState(0);
   const [groupedCart, setGroupedCart] = useState({});
@@ -57,25 +59,31 @@ const Cart = () => {
   };
 
   return (
-    <div>
-      <h2>Shopping Cart</h2>
+    <div className="cart-page">
+      <h2 className="cart-heading">{t('shoppingCart')}</h2>
       {cart.length === 0 ? (
-        <p>Your cart is empty</p>
+        <p className="cart-empty">{t('cartEmpty')}</p>
       ) : (
         <div>
-          <ul>
+          <ul className="cart-items">
             {Object.entries(groupedCart).map(([type, items]) => (
-              <li key={type}>
-                {type.charAt(0).toUpperCase() + type.slice(1)} - {items.length} pieces, price: $
+              <li key={type} className="cart-item">
+                {type.charAt(0).toUpperCase() + type.slice(1)} - {items.length} {t('pieces')}, {t('price')}: $
                 {items.reduce((acc, item) => acc + item.price, 0)}
-                <button onClick={() => handleRemoveFromCart(items[0].id)}>
-                  Remove All
+                <button
+                  className="cart-remove-button"
+                  onClick={() => handleRemoveFromCart(items[0].id)}
+                >
+                  {t('X')}
                 </button>
               </li>
             ))}
           </ul>
-          <h1>Sum: {sum} DOLLÁR</h1>
-          {/* You can add an order functionality here */}
+          <div className="cart-summary">
+            <h1 className="cart-total">{t('sum')}: ${sum.toFixed(2)}</h1>
+            {/* You can add an order functionality here */}
+            <button className="checkout-button">{t('Order')}</button>
+          </div>
         </div>
       )}
     </div>

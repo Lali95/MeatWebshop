@@ -53,10 +53,11 @@ body {
 .search-input {
   margin-right: 10px;
   padding: 10px; /* Add padding to improve comfort */
-  border: 1px solid #555; /* Darker border for better integration with dark background */
+  border: none; /* Remove border */
   border-radius: 20px; /* Rounded corners for a modern look */
-  background-color: #5d5c5c; /* Darker background for input field */
-  color: #a70000; /* Light text color for contrast */
+  background-color: #ffffff; /* Darker background for input field */
+  color: #000000; /* Light text color for contrast */
+  outline: none; /* Remove default outline */
 }
 
 /* Styling for the search button */
@@ -66,7 +67,7 @@ body {
   padding: 10px 20px; /* Increased padding for better clickability */
   background-color: #5d5c5c; /* Darker button background */
   color: #fff; /* Light text color */
-  border: none;
+  border: none; /* Remove border */
   border-radius: 20px; /* Rounded corners to match input field */
   cursor: pointer;
   transition: background-color 0.3s ease;

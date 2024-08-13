@@ -1,97 +1,141 @@
-/* Container for the profile page */
+/* Profile Container */
 .profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: auto; /* Allow container to adjust based on content */
-    max-width: 400px; /* Limit width for a more compact layout */
-    margin: 0 auto; /* Center the container horizontally */
-    background-color: rgba(0, 0, 0, 0.6); /* Darker semi-transparent background */
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    border-radius: 8px; /* Rounded corners for a modern look */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
-  }
-  
-  /* Heading for the profile page */
-  .profile-welcome {
-    color: #fff; /* Light color for better contrast on dark background */
-    margin-bottom: 15px; /* Margin to separate from other elements */
-    font-size: 1.5rem; /* Slightly larger font size for prominence */
-  }
-  
-  /* Balance display styling */
-  .profile-balance {
-    color: #fff; /* Light color for better contrast on dark background */
-    margin-bottom: 20px; /* Margin to separate from other elements */
-    font-size: 1.2rem; /* Slightly larger font size for visibility */
-  }
-  
-  /* Button styling for profile actions */
-  .profile-button {
-    padding: 10px 20px; /* Comfortable padding for clickability */
-    background-color: #007bff; /* Bright color for contrast */
-    color: #fff; /* Light text color */
-    border: none;
-    border-radius: 6px; /* Rounded corners for a modern look */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin: 10px 0; /* Margin to separate buttons */
-    font-size: 1rem; /* Consistent font size */
-  }
-  
-  .profile-button:hover {
-    background-color: #0056b3; /* Slightly darker on hover */
-  }
-  
-  /* Styling for the balance upload form */
-  .balance-form-container {
-    background-color: #333; /* Darker background for the form */
-    padding: 20px; /* Padding inside the form */
-    border-radius: 8px; /* Rounded corners for modern look */
-    width: 100%; /* Full width within the profile container */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
-  }
-  
-  .balance-form-container h2 {
-    color: #fff; /* Light color for better contrast on dark background */
-    margin-bottom: 15px; /* Margin to separate from the form */
-  }
-  
-  .balance-form-container label {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px; /* Margin for spacing */
-    color: #fff; /* Light color for better contrast */
-  }
-  
-  .balance-form-container input {
-    width: 100%; /* Ensure input fields fit within the form width */
-    padding: 10px; /* Comfortable padding */
-    margin-top: 5px; /* Margin to separate from the label */
-    border: 1px solid #555; /* Darker border to blend with dark background */
-    border-radius: 6px; /* Rounded corners */
-    font-size: 1rem; /* Consistent font size */
-  }
-  
-  .balance-form-container button {
-    padding: 10px 20px; /* Comfortable padding for button clickability */
-    background-color: #28a745; /* Green background for success action */
-    color: #fff; /* Light text color */
-    border: none;
-    border-radius: 6px; /* Rounded corners */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 1rem; /* Consistent font size */
-  }
-  
-  .balance-form-container button:hover {
-    background-color: #218838; /* Slightly darker green on hover */
-  }
-  
-  /* Empty paragraph styling (optional) */
-  .profile-empty-paragraph {
-    margin: 20px 0; /* Space between elements */
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: auto;
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Heading for the profile page */
+.profile-heading {
+  color: #fff; /* White color for contrast on dark background */
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+/* Text Paragraphs */
+.profile-container p {
+  font-size: 1rem;
+  margin: 10px 0;
+  color: #fff; /* Ensure all paragraphs have white text color */
+}
+
+/* Profile Details Section */
+.profile-details {
+  color: #fff; /* Ensure text color is white for balance details */
+  text-align: center; /* Center the content */
+}
+
+/* Balance Form */
+.balance-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Balance Label */
+.balance-label {
+  margin-bottom: 8px;
+  color: #fff; /* White color for labels */
+  font-weight: bold;
+  text-align: left;
+  width: 100%;
+}
+
+/* Balance Input */
+.balance-input {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: #222;
+  color: #fff; /* White text color */
+}
+
+/* Balance Button */
+.balance-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+.balance-button:hover {
+  background-color: #0056b3;
+}
+
+/* Error Message */
+.error-message {
+  color: #d9534f;
+  margin-top: 10px;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+/* Admin Section */
+.admin-section {
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* Add Item Form */
+.add-item-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.add-item-form label {
+  margin-bottom: 8px;
+  color: #fff; /* White color for labels */
+  font-weight: bold;
+  text-align: left;
+  width: 100%;
+}
+
+.add-item-form input {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: #222;
+  color: #fff; /* White text color */
+}
+
+.add-item-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+.add-item-button:hover {
+  background-color: #218838;
+}

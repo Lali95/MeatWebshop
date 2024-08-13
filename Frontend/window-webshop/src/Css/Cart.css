@@ -1,36 +1,84 @@
-/* Cart.css */
-
+/* Container for the cart page */
 .cart-page {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .cart-items {
-    margin-bottom: 20px;
-  }
-  
-  .cart-summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .checkout-button {
-    background-color: #00bcd4;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .checkout-button:hover {
-    background-color: #0097a7;
-  }
-  
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.6); /* Darker semi-transparent background */
+  border-radius: 8px; /* Rounded corners for a modern look */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+  font-family: Arial, sans-serif;
+}
+
+/* Heading for the cart page */
+.cart-heading {
+  color: #fff; /* Light text color */
+  margin-bottom: 15px; /* Spacing below heading */
+}
+
+/* Empty cart message */
+.cart-empty {
+  color: #fff; /* Light text color */
+}
+
+/* List of cart items */
+.cart-items {
+  margin-bottom: 20px;
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
+}
+
+/* Each cart item */
+.cart-item {
+  background-color: #333; /* Darker background for items */
+  color: #fff; /* Light text color */
+  padding: 10px;
+  border-radius: 6px; /* Rounded corners */
+  margin-bottom: 10px; /* Spacing between items */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Button to remove items from cart */
+.cart-remove-button {
+  background-color: #d9534f; /* Bright red for remove button */
+  color: #fff; /* Light text color */
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cart-remove-button:hover {
+  background-color: #c9302c; /* Slightly darker red on hover */
+}
+
+/* Summary and checkout section */
+.cart-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff; /* Light text color */
+}
+
+/* Total price text */
+.cart-total {
+  font-size: 1.5rem; /* Larger font size for total */
+}
+
+/* Checkout button styling */
+.checkout-button {
+  background-color: #007bff; /* Bright color for contrast */
+  color: #fff; /* Light text color */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px; /* Rounded corners */
+  font-size: 16px; /* Consistent font size */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.checkout-button:hover {
+  background-color: #0056b3; /* Slightly darker blue on hover */
+}

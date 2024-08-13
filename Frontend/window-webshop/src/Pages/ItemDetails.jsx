@@ -1,101 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import steakImage from '../assets/steak.png';
-import sausageImage from '../assets/sausage.png';
-import '../Css/ItemDetails.css';
+import { useTranslation } from 'react-i18next';
+import '../Css/ItemDetails.css'; // Add CSS for styling
 
-function ItemDetails() {
+const ItemDetails = () => {
+  const { t } = useTranslation();
   const { itemType, itemId } = useParams();
   const [item, setItem] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [itemImage, setItemImage] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchItemDetails() {
+    async function fetchItem() {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        setError(t('userNotAuthenticated'));
+        return;
+      }
+
       try {
-        const token = localStorage.getItem('accessToken'); 
-        console.log(token)
-        const response = await fetch(`/api/${itemType}/${itemId}`, {
+        const response = await fetch(`/api/OrderItem/${itemId}`, {
           headers: {
-            'Authorization': `Bearer ${token}`, 
-            'Content-Type': 'application/json'
+            Authorization: `Bearer ${token}`,
           },
         });
 
-      
-       
-        
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          throw new Error(`Failed to fetch item details: ${response.status}`);
         }
 
-        const itemData = await response.json();
-        setItem(itemData);
-        setLoading(false);
+        const data = await response.json();
+        setItem(data);
       } catch (error) {
-        console.error('Error fetching item details:', error);
-        setLoading(false);
+        console.error('Error fetching item details:', error.message);
+        setError(t('failedToFetchItemDetails'));
       }
     }
 
-    fetchItemDetails();
-  }, [itemType, itemId]);
-
-  useEffect(() => {
-    // Determine which image to use based on itemType
-    if (itemType === 'sausage') {
-      setItemImage(sausageImage);
-    } else if (itemType === 'steak') {
-      setItemImage(steakImage);
-    }
-  }, [itemType]);
-
-  const addToCart = (item) => {
-    const storedCart = localStorage.getItem('cart');
-    const cart = storedCart ? JSON.parse(storedCart) : [];
-    
-    const updatedCart = [...cart, item];
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    alert(`${item.name} has been added to the cart!`);
-  };
+    fetchItem();
+  }, [itemId, t]);
 
   const handleAddToCart = () => {
-    if (!item) return;
-
-    const cartItem = {
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      quantity: 1,
-      type: itemType,
-      image: itemImage,
-    };
-
-    addToCart(cartItem);
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push(item);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(t('itemAddedToCart'));
   };
 
-  if (loading) {
-    return <div className="loading">Loading...</div>;
+  if (error) {
+    return <div>{t('error')}: {error}</div>;
   }
 
   if (!item) {
-    return <div className="not-found">Item not found</div>;
+    return <div>{t('loading')}...</div>;
   }
 
   return (
-    <div className="item-details">
-      <h1 className="item-name">{item.name}</h1>
-      <img src={itemImage} alt={item.name} className="item-image" />
-      <div className="item-info">
-        <p className="item-type">Type: {item.type}</p>
-        <p className="item-weight">Weight: {item.weight} g</p>
-        <p className="item-price">Price: ${item.price.toFixed(2)}</p>
-        <button className="add-to-cart-button" onClick={handleAddToCart}>
-          Add to Cart
-        </button>
-      </div>
+    <div className="item-detail">
+      <h1>{item.name}</h1>
+      <img src={item.image} alt={item.name} />
+      <p>{item.description}</p>
+      <p>{t('price')}: ${item.price}</p>
+      <button onClick={handleAddToCart}>{t('addToCart')}</button>
     </div>
   );
-}
+};
 
 export default ItemDetails;

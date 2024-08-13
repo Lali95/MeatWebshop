@@ -1,127 +1,253 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../Css/Profile.css"; // Ensure this path is correct
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import '../Css/Profile.css'; // Ensure this path is correct
+
 
 const Profile = () => {
-  const [userInfo, setUserInfo] = useState(null);
-  const [uploadBalance, setUploadBalance] = useState(false);
-  const [amount, setAmount] = useState("");
-  const navigate = useNavigate();
+  const { t } = useTranslation(); // Initialize the translation function
+  const [userData, setUserData] = useState({
+    balance: 0,
+    name: '',
+    email: '',
+    role: ''
+  });
+  const [balanceUpdate, setBalanceUpdate] = useState('');
+  const [error, setError] = useState('');
+  const [newItem, setNewItem] = useState({
+    name: '',
+    price: '',
+    quantity: '',
+    type: ''
+  });
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      const email = localStorage.getItem("userEmail");
-      try {
-        const response = await fetch(`/api/Auth/GetUserByEmail/${email}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
+  // Fetch the user's data
+  const fetchUserData = async () => {
+    const email = localStorage.getItem('userEmail');
+    const token = localStorage.getItem('accessToken');
 
-        if (!response.ok) {
-          console.error("Failed to fetch user information:", response.statusText);
-          return;
-        }
-
-        const data = await response.json();
-        setUserInfo(data);
-      } catch (error) {
-        console.error("Error during user information retrieval:", error);
-      }
-    };
-
-    fetchUserInfo();
-  }, []);
-
-  const handleBalanceClick = () => {
-    setUploadBalance(!uploadBalance);
-  };
-
-  const handleBalanceUpdate = async (e) => {
-    e.preventDefault();
+    if (!email || !token) {
+      console.error('User email or token not found in local storage');
+      return;
+    }
 
     try {
-      const balanceResponse = await fetch("/api/Auth/UpBalance", {
-        method: "PATCH",
+      const response = await fetch(`/api/Auth/GetUserByEmail/${email}`, {
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: userInfo.email,
-          balance: parseFloat(amount),
-        }),
-      });
-
-      if (!balanceResponse.ok) {
-        console.error(`Failed to update balance. Status: ${balanceResponse.status}`);
-        return;
-      }
-
-      // Fetch updated user info
-      const updatedResponse = await fetch(`/api/Auth/GetUserByEmail/${userInfo.email}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          'Authorization': `Bearer ${token}`
         },
       });
 
-      if (!updatedResponse.ok) {
-        console.error("Failed to fetch updated user information:", updatedResponse.statusText);
+      if (!response.ok) {
+        console.error('Failed to fetch user data:', response.statusText);
+        setError('Failed to fetch user data. Please try again later.');
         return;
       }
 
-      const updatedData = await updatedResponse.json();
-      setUserInfo(updatedData);
+      const user = await response.json();
+      setUserData({
+        balance: user.balance || 0,
+        name: user.userName || 'N/A',
+        email: user.email || 'N/A',
+        role: user.role || 'User'
+      });
 
-      // Clear the input and hide the form
-      setAmount("");
-      setUploadBalance(false);
+      // Fetch orders if the user is an admin
+      if (user.role === 'Admin') {
+        await fetchOrders();
+      }
+
     } catch (error) {
-      console.error("Error during balance update:", error);
+      console.error('Error fetching user data:', error);
+      setError('Error fetching user data. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleLogOut = () => {
-    localStorage.clear();
-    navigate("/");
+  // Fetch all orders
+  const fetchOrders = async () => {
+    const token = localStorage.getItem('accessToken');
+
+    try {
+      const response = await fetch(`/api/Orders`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+      });
+
+      if (!response.ok) {
+        console.error('Failed to fetch orders:', response.statusText);
+        setError('Failed to fetch orders. Please try again later.');
+        return;
+      }
+
+      const orders = await response.json();
+      setOrders(orders);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+      setError('Error fetching orders. Please try again later.');
+    }
   };
 
-  if (!userInfo) {
-    return <p>Loading...</p>;
+  // Update the user's balance
+  const updateBalance = async (e) => {
+    e.preventDefault();
+
+    const email = localStorage.getItem('userEmail');
+    const token = localStorage.getItem('accessToken');
+
+    if (!email || !token) {
+      console.error('User email or token not found in local storage');
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/Auth/UpBalance`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ email, balance: parseFloat(balanceUpdate) }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Failed to update balance:', errorData.message || response.statusText);
+        setError('Failed to update balance. Please try again later.');
+        return;
+      }
+
+      alert('Balance updated successfully');
+      setBalanceUpdate(''); // Clear the input field
+      await fetchUserData(); // Fetch the latest user data from the server
+    } catch (error) {
+      console.error('Error updating balance:', error);
+      setError('Error updating balance. Please try again later.');
+    }
   };
+
+  // Handle adding a new item
+  const addItem = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('accessToken');
+
+    try {
+      const response = await fetch('/api/OrderItem', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(newItem),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Failed to add item:', errorData.message || response.statusText);
+        setError('Failed to add item. Please try again later.');
+        return;
+      }
+
+      alert('Item added successfully');
+      setNewItem({ name: '', price: '', quantity: '', type: '' }); // Clear the form
+    } catch (error) {
+      console.error('Error adding item:', error);
+      setError('Error adding item. Please try again later.');
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   return (
     <div className="profile-container">
-      <p className="profile-welcome">Welcome, {userInfo.userName}</p>
-      <p className="profile-balance">Balance: ${userInfo.balance.toFixed(2)}</p>
-      <button className="profile-button" onClick={handleBalanceClick}>
-        {uploadBalance ? "Cancel" : "Upload balance"}
-      </button>
-      {uploadBalance && (
-        <div className="balance-form-container">
-          <h2>Upload balance</h2>
-          <form onSubmit={handleBalanceUpdate}>
-            <label>
-              Amount:
+      {loading ? (
+        <p>{t('loading')}</p> // Replace with the translation key
+      ) : (
+        <>
+          <h2 className="profile-heading">{t('profileHeading')}</h2>
+          {error && <p className="error-message">{error}</p>}
+          <div className="profile-details">
+            <p><strong>{t('name')}:</strong> {userData.name}</p>
+            <p><strong>{t('email')}:</strong> {userData.email}</p>
+            <p><strong>{t('yourBalance')}:</strong> ${userData.balance.toFixed(2)}</p>
+            <p><strong>{t('role')}:</strong> {userData.role}</p>
+          </div>
+          <form onSubmit={updateBalance} className="balance-form">
+            <label className="balance-label">
+              {t('updateBalance')}:
               <input
                 type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                step="1"
+                value={balanceUpdate}
+                onChange={(e) => setBalanceUpdate(e.target.value)}
                 required
-                className="profile-input"
+                className="balance-input"
               />
             </label>
-            <button type="submit" className="profile-button">
-              Upload
-            </button>
+            <button type="submit" className="balance-button">{t('updateBalanceButton')}</button>
           </form>
-        </div>
+
+          {userData.role === 'Admin' && (
+            <div className="admin-section">
+              <h3>{t('addItemToStock')}</h3>
+              <form onSubmit={addItem} className="add-item-form">
+                <label>
+                  {t('itemName')}:
+                  <input
+                    type="text"
+                    value={newItem.name}
+                    onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
+                    required
+                  />
+                </label>
+                <label>
+                  {t('itemPrice')}:
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={newItem.price}
+                    onChange={(e) => setNewItem({ ...newItem, price: e.target.value })}
+                    required
+                  />
+                </label>
+                <label>
+                  {t('itemQuantity')}:
+                  <input
+                    type="number"
+                    value={newItem.quantity}
+                    onChange={(e) => setNewItem({ ...newItem, quantity: e.target.value })}
+                    required
+                  />
+                </label>
+                <label>
+                  {t('itemType')}:
+                  <input
+                    type="text"
+                    value={newItem.type}
+                    onChange={(e) => setNewItem({ ...newItem, type: e.target.value })}
+                    required
+                  />
+                </label>
+                <button type="submit" className="add-item-button">{t('addItemButton')}</button>
+              </form>
+
+              <h3>{t('orders')}</h3>
+              <ul>
+                {orders.map(order => (
+                  <li key={order.id}>{t('orderId')}: {order.id}, {t('orderDetails')}: {order.details}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </>
       )}
-      <p className="profile-empty-paragraph"></p>
-      <button className="profile-button" onClick={handleLogOut}>
-        Log out
-      </button>
     </div>
   );
 };

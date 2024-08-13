@@ -3,6 +3,7 @@ using Backend.Model;
 using Backend.Repository;
 using Backend.Services.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -15,13 +16,20 @@ namespace Backend.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AuthController> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AuthController(IAuthService authService, IConfiguration configuration, IUserRepository userRepository, ILogger<AuthController> logger)
+        public AuthController(
+            IAuthService authService, 
+            IConfiguration configuration, 
+            IUserRepository userRepository, 
+            ILogger<AuthController> logger, 
+            UserManager<ApplicationUser> userManager)
         {
             _authService = authService;
             _configuration = configuration;
             _userRepository = userRepository;
             _logger = logger;
+            _userManager = userManager;
         }
 
         [HttpPost("Register")]
@@ -59,12 +67,30 @@ namespace Backend.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(new AuthResponse(result.Email, result.UserName, result.Token));
+            var user = await _userManager.FindByEmailAsync(result.Email);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var role = roles.FirstOrDefault() ?? "User"; // Default to "User" if no role found
+
+            // Return the AuthResponse with Balance and Token
+            return Ok(new AuthResponse(
+                user.Email,
+                user.UserName,
+                user.Balance, // Ensure Balance is decimal
+                result.Token,
+                role
+            ));
         }
 
-        [Authorize]
+
+
+       
         [HttpGet("GetUserByEmail/{userEmail}")]
-        public async Task<ActionResult<ApplicationUser>> GetUserByEmail(string userEmail)
+        public async Task<ActionResult<AuthResponse>> GetUserByEmail(string userEmail)
         {
             try
             {
@@ -74,7 +100,20 @@ namespace Backend.Controllers
                     return NotFound("No user found in database");
                 }
 
-                return Ok(user);
+                var roles = await _userManager.GetRolesAsync(user);
+                var role = roles.FirstOrDefault() ?? "User";
+
+                // Assuming `result.Token` is not needed here, just the user balance
+                // Use a placeholder token if necessary or leave it out of this response
+                var authResponse = new AuthResponse(
+                    user.Email,
+                    user.UserName,
+                    user.Balance, // Ensure Balance is decimal
+                    string.Empty, // Or provide a token if available
+                    role
+                );
+
+                return Ok(authResponse);
             }
             catch (Exception e)
             {
@@ -82,21 +121,26 @@ namespace Backend.Controllers
             }
         }
 
+
+
+
+
         [HttpPatch("UpBalance")]
         public async Task<IActionResult> UpBalanceAsync([FromBody] UpBalanceRequest request)
         {
-            Console.WriteLine(request.Email);
             var success = await _userRepository.UpdateBalanceAsync(request.Email, request.Balance);
 
             if (success)
             {
-                return Ok("Balance updated successfully");
+                return Ok(new { message = "Balance updated successfully" });
             }
             else
             {
-                return BadRequest("Failed to update balance");
+                return BadRequest(new { message = "Failed to update balance" });
             }
         }
+
+
 
         [HttpDelete("DeleteTestUser")]
         public async Task<IActionResult> DeleteUserByEmailAsync()
