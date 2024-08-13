@@ -23,7 +23,7 @@ const resources = {
       "shoppingCart": "Shopping Cart",
       "cartEmpty": "Your cart is empty",
       "pieces": "pieces",
-      "price": "price",
+      "price": "Price",
       "removeAll": "Remove All",
       "sum": "Sum",
       "checkout": "Checkout",
@@ -52,7 +52,10 @@ const resources = {
       "address": "Address",
       "registering": "Registering...",
       "passwordsDoNotMatch": "Passwords do not match.",
-      "orderDetails": "Order Details"
+      "orderDetails": "Order Details",
+      "remove": "Remove",
+      "order" : "Order",
+      "name" : "Name",
     }
   },
   hu: {
@@ -76,7 +79,7 @@ const resources = {
       "shoppingCart": "Bevásárlókosár",
       "cartEmpty": "Az Ön kosara üres",
       "pieces": "darab",
-      "price": "ár",
+      "price": "Ár",
       "removeAll": "Összes eltávolítása",
       "sum": "Összeg",
       "checkout": "Fizetés",
@@ -105,7 +108,10 @@ const resources = {
       "address": "Cím",
       "registering": "Regisztráció folyamatban...",
       "passwordsDoNotMatch": "A jelszavak nem egyeznek.",
-      "orderDetails": "Rendelési adatok"
+      "orderDetails": "Rendelési adatok",
+      "remove": "Eltávolítás",
+      "order" : "rendelés",
+      "name" : "név"
     }
   }
 };

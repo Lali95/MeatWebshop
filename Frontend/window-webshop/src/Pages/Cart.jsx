@@ -74,7 +74,7 @@ const Cart = () => {
                   className="cart-remove-button"
                   onClick={() => handleRemoveFromCart(items[0].id)}
                 >
-                  {t('removeAll')}
+                  {t('X')}
                 </button>
               </li>
             ))}
@@ -82,7 +82,7 @@ const Cart = () => {
           <div className="cart-summary">
             <h1 className="cart-total">{t('sum')}: ${sum.toFixed(2)}</h1>
             {/* You can add an order functionality here */}
-            <button className="checkout-button">{t('checkout')}</button>
+            <button className="checkout-button">{t('Order')}</button>
           </div>
         </div>
       )}
