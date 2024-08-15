@@ -1,15 +1,16 @@
-MeatWebshop
-Table of Contents
+# MeatWebshop
+## Table of Contents
 
-    About The Project
-    Technologies
-    Features
-    Installation
+ - [About The Project](#about-the-project)
+ - [Technologies](#technologies)
+ - [Features](#features)
+ - [Installation](#installation)
 
-About The Project
+## About The Project
 
 This E-Commerce Web Application is a dynamic and modern online shopping platform developed as a solo project. It emphasizes a seamless user interface and is designed with a focus on delivering a polished, user-centric experience. The application leverages advanced frontend technologies for interactive and responsive design while ensuring efficient data management and user authentication.
-Technologies
+
+## Technologies
 
     React: Utilized for building the interactive and component-based user interface.
     .NET: Provides a robust backend framework for managing business logic and server-side operations.
@@ -18,7 +19,7 @@ Technologies
     Docker: Containerization of the application for consistent development and deployment across different environments.
     Vite: Enhances the development experience with fast build times and hot module replacement.
 
-Features
+## Features
 
     Responsive Design: Built with Bootstrap, the application is fully responsive, ensuring a smooth experience across devices.
     Multilingual Support: Integrated with react-i18next, the application supports multiple languages for a wider audience reach.
@@ -27,7 +28,7 @@ Features
     Secure Authentication: User registration and login are managed by the Identity Framework, ensuring secure access.
     Containerized Deployment: Docker is used to containerize the application, simplifying deployment and scalability.
 
-Installation
+## Installation
 
 To run this project locally, follow these steps:
 
