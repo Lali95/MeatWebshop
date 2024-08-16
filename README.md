@@ -37,7 +37,7 @@ To run this project locally, follow these steps:
 
     
 
-git clone https://github.com/Lali95/Vetproject
+git clone https://github.com/Lali95/MeatWebshop
 
 Navigate to the Project Directory:
 
