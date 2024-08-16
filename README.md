@@ -12,13 +12,13 @@ This E-Commerce Web Application is a dynamic and modern online shopping platform
 
 ## Technologies
 
-   ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) Utilized for building the interactive and component-based user interface.
+   ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) 
    ![React Bootstrap](https://img.shields.io/badge/React%20Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
-    .NET: Provides a robust backend framework for managing business logic and server-side operations.
-    Entity Framework: Used for data access, managing the database operations in an object-oriented manner.
-    Identity Framework: Implements user authentication and authorization, ensuring secure access to the application.
-    Docker: Containerization of the application for consistent development and deployment across different environments.
-    ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white) Enhances the development experience with fast build times and hot module replacement.
+    ![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+   ![Entity Framework](https://img.shields.io/badge/Entity%20Framework-007ACC?style=for-the-badge&logo=Microsoft&logoColor=white)
+   ![Identity Framework](https://img.shields.io/badge/Identity%20Framework-4B32C3?style=for-the-badge&logo=Microsoft&logoColor=white)
+   ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+    ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white) 
 
 ## Features
 
